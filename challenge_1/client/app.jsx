@@ -1,6 +1,7 @@
 import React from 'react';
 import Header from './components/Header.jsx';
 import Canvas from './components/Canvas.jsx';
+import axios from 'axios';
 
 class App extends React.Component {
   constructor(props) {
@@ -20,7 +21,14 @@ class App extends React.Component {
   }
 
   onSubmitHandler(e) {
-
+    e.preventDefault();
+    axios.get('/events?q=greece&_limit=10&_page=5')
+      .then(resp => {
+          console.log(resp.data);
+      })
+      .catch(error => {
+          console.log(error);
+      });
   }
 
   render() {
