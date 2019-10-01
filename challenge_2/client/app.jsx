@@ -10,7 +10,14 @@ export default class App extends Component {
     }
   }
 
+  parseMonth(date) {
+    var fullDate = new Date(date);
+    var options = { month: 'long'};
+    return new Intl.DateTimeFormat('en-US', options).format(fullDate)
+  }
+
   render() {
+    console.log(this.parseMonth(fakeData[0].time.updated))
     console.log(fakeData);
     return (
       <div>

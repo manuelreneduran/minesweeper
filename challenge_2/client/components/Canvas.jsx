@@ -5,9 +5,6 @@ import Chart from "chart.js";
 export default class Canvas extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-
-    };
     this.chartRef = React.createRef();
   }
 
@@ -17,17 +14,16 @@ export default class Canvas extends Component {
     new Chart(myChartRef, {
       type: "line",
       data: {
-          //Bring in data
-          labels: ["Jan", "Feb", "March"],
-          datasets: [
-              {
-                  label: "Sales",
-                  data: [86, 67, 91],
-              }
-          ]
+        labels: ["Jan", "Feb", "March"],
+        datasets: [
+          {
+            label: "Sales",
+            data: [86, 67, 91],
+            fill: false
+          }
+        ]
       },
       options: {
-          //Customize chart options
       }
     });
   }
@@ -39,6 +35,7 @@ export default class Canvas extends Component {
           id="myChart"
           ref={this.chartRef}
       />
+      <p>Powered by CoinDesk</p>
   </div>
     )
   }
