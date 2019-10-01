@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { Component } from 'react';
+import fakeData from '../data/fakeCoinDeskData.json';
+import Canvas from './components/Canvas.jsx';
 
-class App extends React.Component {
+export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -9,12 +11,11 @@ class App extends React.Component {
   }
 
   render() {
+    console.log(fakeData);
     return (
       <div>
-        test
+        <Canvas/>
       </div>
     )
   }
 }
-
-export default App;
