@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import fakeData from '../data/fakeCoinDeskData.json';
 import Canvas from './components/Canvas.jsx';
+import axios from 'axios';
 
 export default class App extends Component {
   constructor(props) {
@@ -12,7 +13,10 @@ export default class App extends Component {
   }
 
   componentDidMount() {
-    this.setParsedRatesAndDays(fakeData.bpi);
+    axios.get('https://api.coindesk.com/v1/bpi/historical/close?start=2019-09-01&end=2019-09-28')
+    .then(res => {
+      this.setParsedRatesAndDays(res.data.bpi);
+    })
   }
 
   parseDay(date) {
