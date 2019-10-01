@@ -1,10 +1,10 @@
 import React from 'react';
 import Search from './Search.jsx';
 
-function Header( {searchChangeHandler, onSubmitHandler} ) {
+function Header( {searchChangeHandler, searchSubmitHandler } ) {
   return (
     <div id="header">
-      <Search searchChangeHandler={searchChangeHandler} onSubmitHandler={onSubmitHandler}/>
+      <Search searchChangeHandler={searchChangeHandler} searchSubmitHandler={searchSubmitHandler}/>
     </div>
   )
 }
