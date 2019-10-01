@@ -9,16 +9,17 @@ export default class Canvas extends Component {
   }
 
   componentDidMount() {
+    const { rates, days } = this.props;
     const myChartRef = this.chartRef.current.getContext("2d");
 
     new Chart(myChartRef, {
       type: "line",
       data: {
-        labels: ["Jan", "Feb", "March"],
+        labels: days,
         datasets: [
           {
             label: "Sales",
-            data: [86, 67, 91],
+            data: rates,
             fill: false
           }
         ]

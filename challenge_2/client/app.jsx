@@ -6,22 +6,43 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-
+      rates: null,
+      days: null,
     }
   }
 
-  parseMonth(date) {
+  componentDidMount() {
+    this.setParsedRatesAndDays(fakeData.bpi);
+  }
+
+  parseDay(date) {
     var fullDate = new Date(date);
-    var options = { month: 'long'};
-    return new Intl.DateTimeFormat('en-US', options).format(fullDate)
+    return fullDate.getUTCDate();
+  }
+
+  parseRate(rate) {
+    return Math.floor(rate);
+  }
+
+  setParsedRatesAndDays(data) {
+    var rates = [];
+    var days = [];
+
+    for (let day in data) {
+      days.push(this.parseDay(day));
+      rates.push(this.parseRate(data[day]));
+    }
+
+    this.setState({
+      rates,
+      days
+    })
   }
 
   render() {
-    console.log(this.parseMonth(fakeData[0].time.updated))
-    console.log(fakeData);
     return (
       <div>
-        <Canvas/>
+        {this.state.days ? <Canvas rates={this.state.rates} days={this.state.days}/> : null}
       </div>
     )
   }
