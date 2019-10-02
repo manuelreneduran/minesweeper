@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Board from './Board.jsx';
 
 export default class App extends Component {
   constructor(props) {
@@ -8,7 +9,9 @@ export default class App extends Component {
 
   render() {
     return (
-      <div>test</div>
+      <div id="main-container">
+        <Board/>
+      </div>
     )
   }
 }
