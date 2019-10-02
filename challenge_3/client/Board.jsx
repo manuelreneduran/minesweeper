@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Table from './Table.jsx';
 
 export default class Board extends Component {
   constructor(props) {
@@ -7,29 +8,9 @@ export default class Board extends Component {
   }
 
   render() {
-    const tableStyle = {
-      width: '100%',
-    };
     return (
       <div id="board">
-        <table id="table" style={tableStyle}>
-          <tbody>
-            <tr>
-              <td>1</td>
-              <td>2</td>
-              <td>3</td>
-              <td>4</td>
-              <td>5</td>
-            </tr>
-            <tr>
-              <td>6</td>
-              <td>7</td>
-              <td>8</td>
-              <td>9</td>
-              <td>10</td>
-            </tr>
-          </tbody>
-        </table>
+       <Table/>
       </div>
     )
   }

@@ -5,12 +5,6 @@ import App from '../client/App.jsx';
 import Board from '../client/Board.jsx';
 import renderer from 'react-test-renderer';
 
-// it('renders correctly', () => {
-//   const tree = renderer
-//     .create(<App/>)
-//     .toJSON();
-//   expect(tree).toMatchSnapshot();
-// });
 
 describe('<App/>', () => {
 
