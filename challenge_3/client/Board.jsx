@@ -6,7 +6,9 @@ export default class Board extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      rollOne: 0,
+      rollOne: undefined,
+      rollTwo: undefined,
+      frameTotal: undefined,
       activeFrame: "frameOne"
     }
 
@@ -37,7 +39,7 @@ export default class Board extends Component {
     return (
       <div id="board">
        <RollTable/>
-       <ScoreTable activeFrame={this.state.activeFrame} rollOne={this.state.rollOne}/>
+       <ScoreTable activeFrame={this.state.activeFrame} rollOne={this.state.rollOne} rollTwo={this.state.rollTwo} frameTotal={this.state.frameTotal}/>
        <button onClick={this.changeFrame}>change frame</button>
        <button onClick={this.changeRollOneScore}>change score</button>
       </div>
