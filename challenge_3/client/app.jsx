@@ -1,18 +1,16 @@
 import React, { Component } from 'react';
 import Board from './Board.jsx';
+import './style.css'
 
-export default class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {}
-  }
-
-  render() {
-    return (
-      <div id="main-container">
-        <Board/>
-      </div>
-    )
-  }
+function App() {
+  return (
+    <div id="main-container">
+      <Board/>
+    </div>
+  )
 }
+
+
+
+export default App;
 
