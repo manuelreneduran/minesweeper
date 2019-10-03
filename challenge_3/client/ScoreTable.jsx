@@ -7,15 +7,15 @@ const frameNames = ['One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eigh
 
 function ScoreTable({ activeFrame, rollOne, rollTwo, frameTotal }) {
   const frames = frameNames.map(ele => {
-    return <ScoreTableCell key={counter++} activeFrame={activeFrame} rollOne={rollOne} rollTwo={rollTwo}
-    frameName={"frame" + ele} frameTotal={frameTotal}/>
+    return <ScoreTableCell key={counter++}
+    frameName={"frame-" + ele} frameTotal={"frame-total-" + ele} rollOne={"roll-one-" + ele} rollTwo={"roll-two-" + ele}/>
   })
 
   return (
     <table id="score-table">
-      <ScoreTableCell activeFrame={activeFrame} rollOne={rollOne} frameName={"frameOne"}/>
-      <ScoreTableCell activeFrame={activeFrame} rollOne={rollOne} frameName={"frameTwo"}/>
-      {/* {frames} */}
+      {/* <ScoreTableCell />
+      <ScoreTableCell /> */}
+      {frames}
 
     </table>
   )

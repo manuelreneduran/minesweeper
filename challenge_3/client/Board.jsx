@@ -14,6 +14,8 @@ export default class Board extends Component {
 
     this.changeFrame = this.changeFrame.bind(this);
     this.changeRollOneScore = this.changeRollOneScore.bind(this);
+    this.changeRollTwoScore = this.changeRollTwoScore.bind(this);
+
   }
 
   changeFrame() {
@@ -35,13 +37,21 @@ export default class Board extends Component {
     })
   }
 
+  changeRollTwoScore() {
+    var randomNumber = Math.floor(Math.random() * (10 - 1) + 1);
+    this.setState({
+      rollTwo: randomNumber
+    })
+  }
+
   render() {
     return (
       <div id="board">
        <RollTable/>
        <ScoreTable activeFrame={this.state.activeFrame} rollOne={this.state.rollOne} rollTwo={this.state.rollTwo} frameTotal={this.state.frameTotal}/>
        <button onClick={this.changeFrame}>change frame</button>
-       <button onClick={this.changeRollOneScore}>change score</button>
+       <button onClick={this.changeRollOneScore}>change rollOne</button>
+       <button onClick={this.changeRollTwoScore}>change rollTwo</button>
       </div>
     )
   }
