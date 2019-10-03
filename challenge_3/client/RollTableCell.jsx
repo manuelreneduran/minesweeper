@@ -1,8 +1,8 @@
 import React from 'react'
 
-function RollTableCell( {num} ) {
+function RollTableCell({ num, handleClick, currentRoll }) {
   return (
-    <td className="rolltable-cell">{num}</td>
+    <td onClick={e => handleClick(e, currentRoll)} className="rolltable-cell">{num}</td>
   )
 }
 

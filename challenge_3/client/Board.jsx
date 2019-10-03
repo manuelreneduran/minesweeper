@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import RollTable from './RollTable.jsx';
 import ScoreTable from './ScoreTable.jsx';
+import { gameIsOver } from './controllers/ScoreTableHelpers.js';
 
 export default class Board extends Component {
   constructor(props) {
@@ -9,49 +10,35 @@ export default class Board extends Component {
       rollOne: undefined,
       rollTwo: undefined,
       frameTotal: undefined,
-      activeFrame: "frameOne"
+      currentRoll: "rollOne",
+      currentFrame: "frameOne"
     }
 
-    this.changeFrame = this.changeFrame.bind(this);
-    this.changeRollOneScore = this.changeRollOneScore.bind(this);
-    this.changeRollTwoScore = this.changeRollTwoScore.bind(this);
+    this.handleClick = this.handleClick.bind(this);
 
   }
 
-  changeFrame() {
-    if (this.state.activeFrame === "frameOne") {
-      this.setState({
-        activeFrame: "frameTwo"
-      })
+  handleClick(event, value) {
+    this.handleFlow(event, value);
+  }
+
+  handleFlow(event, value) {
+    if (gameIsOver(this.state.currentFrame)) {
+      console.log("game is over");
+      return;
     } else {
-      this.setState({
-        activeFrame: "frameOne"
-      })
+      console.log("game's not over");
+      this.setState({[value]: event.target.innerText});
     }
   }
 
-  changeRollOneScore() {
-    var randomNumber = Math.floor(Math.random() * (10 - 1) + 1);
-    this.setState({
-      rollOne: randomNumber
-    })
-  }
-
-  changeRollTwoScore() {
-    var randomNumber = Math.floor(Math.random() * (10 - 1) + 1);
-    this.setState({
-      rollTwo: randomNumber
-    })
-  }
 
   render() {
     return (
       <div id="board">
-       <RollTable/>
-       <ScoreTable activeFrame={this.state.activeFrame} rollOne={this.state.rollOne} rollTwo={this.state.rollTwo} frameTotal={this.state.frameTotal}/>
-       <button onClick={this.changeFrame}>change frame</button>
-       <button onClick={this.changeRollOneScore}>change rollOne</button>
-       <button onClick={this.changeRollTwoScore}>change rollTwo</button>
+       <RollTable handleClick={this.handleClick} currentRoll={this.state.currentRoll}/>
+       <ScoreTable rollOne={this.state.rollOne} rollTwo={this.state.rollTwo} frameTotal={this.state.frameTotal}/>
+
       </div>
     )
   }
