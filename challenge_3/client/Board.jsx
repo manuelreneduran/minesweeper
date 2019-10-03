@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import RollTable from './RollTable.jsx';
 import ScoreTable from './ScoreTable.jsx';
-import { gameIsOver, isNewFrame, isRollTwo, calculateFrameTotal, rollIsInValidRange  } from './controllers/ScoreTableHelpers.js';
+import { gameIsOver, isNewFrame, isRollTwo, calculateFrameTotal, rollIsInValidRange, isRollStrike, isRollSpare } from './controllers/ScoreTableHelpers.js';
 
 export default class Board extends Component {
   constructor(props) {
@@ -13,6 +13,7 @@ export default class Board extends Component {
       gameTotal: 0,
       currentRoll: "rollOne",
       currentFrame: "frameOne",
+      strikeCounter: 0
     }
 
     this.handleClick = this.handleClick.bind(this);
@@ -57,6 +58,21 @@ export default class Board extends Component {
         frameTotal,
         gameTotal
     });
+
+    var newCounter = 0;
+    if (isRollStrike(rollValue)) {
+      console.log("roll is a strike");
+      newCounter = 2;
+    } else if (isRollSpare(frameTotal) && this.state.currentRoll === "rollTwo") {
+      console.log("roll is a spare");
+      newCounter = 1;
+    }
+
+    var totalCounter = this.state.strikeCounter + newCounter;
+
+    if (newCounter === 1 || newCounter === 2) {
+      this.setState({ strikeCounter: totalCounter });
+    }
   }
 
 

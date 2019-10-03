@@ -32,6 +32,13 @@
   }
 
 //check the strike counter to see if previous roll was a spare or strike
+  function isRollStrike(rollValue) {
+    return rollValue === 10 ? true : false;
+  }
+
+  function isRollSpare(frameTotal) {
+    return frameTotal === 10 ? true : false;
+  }
   //if so, add value to previous frame's total and subtract either 1 or 2 from strike counter
 
 //check to see if frame total is a strike or a spare
@@ -45,4 +52,4 @@
     //if so, end the game
   //if not, update the current frame to the next
 
-  module.exports = { gameIsOver, isNewFrame, calculateFrameTotal, isRollTwo, rollIsInValidRange }
+  module.exports = { gameIsOver, isNewFrame, calculateFrameTotal, isRollTwo, rollIsInValidRange, isRollStrike, isRollSpare }
