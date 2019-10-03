@@ -6,11 +6,18 @@
   function gameIsOver(currentFrame) {
     return currentFrame === "frameTen" ? true : false;
   }
-//check to see if roll value exceeds maximum possible score for that frame
-  //if so do nothing
 
-//check to see what the current roll is and update the state of that roll with new value
-  //as well as the frame total and game total
+//check to see what the current roll is
+  function isRollTwo(roll) {
+    return roll === "rollTwo" ? true : false;
+  }
+  //if roll is rollTwo check to see if roll value exceeds maximum possible score for that frame
+    //if so do nothing
+  function rollIsInValidRange(currentRoll, prevRoll) {
+    return prevRoll + currentRoll <= 10 ? true : false;
+    }
+    //if not update the state of that roll with new value
+      //as well as the frame total and game total
 
 //check the strike counter to see if previous roll was a spare or strike
   //if so, add value to previous frame's total and subtract either 1 or 2 from strike counter
@@ -26,4 +33,4 @@
     //if so, end the game
   //if not, update the current frame to the next
 
-  module.exports = { gameIsOver }
+  module.exports = { gameIsOver, isRollTwo, rollIsInValidRange }
