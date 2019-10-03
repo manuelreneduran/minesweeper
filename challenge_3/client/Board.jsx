@@ -32,6 +32,17 @@ export default class Board extends Component {
       return;
     }
 
+    //decrements strike counter
+    let strikeCounter = this.state.strikeCounter;
+
+      if ( strikeCounter > 0 ) {
+        strikeCounter = strikeCounter - 1;
+        //TODO: UPDATE PREVIOUS FRAME TOTAL
+        this.setState({
+          strikeCounter
+        })
+      }
+
     if (isNewFrame(this.state.currentRoll)) {
       console.log("is new frame");
       this.setState( {
@@ -68,7 +79,7 @@ export default class Board extends Component {
       newCounter = 1;
     }
 
-    var totalCounter = this.state.strikeCounter + newCounter;
+    var totalCounter = strikeCounter + newCounter;
 
     if (newCounter === 1 || newCounter === 2) {
       this.setState({ strikeCounter: totalCounter });

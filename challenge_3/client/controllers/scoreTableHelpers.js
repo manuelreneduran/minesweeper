@@ -39,7 +39,8 @@
   function isRollSpare(frameTotal) {
     return frameTotal === 10 ? true : false;
   }
-  //if so, add value to previous frame's total and subtract either 1 or 2 from strike counter
+
+  //****************JQUERY  */if so, add value to previous frame's total subtract either 1 or 2 from strike counter
 
 //check to see if frame total is a strike or a spare
   //if so, update strike counter to either 1 or 2
