@@ -3,18 +3,18 @@
 
 //check to make sure game isn't over
   //if so do nothing
-  function gameIsOver(currentFrame) {
-    return currentFrame === "gameOver" ? true : false;
+  function isGameOver(currentFrame) {
+    return currentFrame === 0 ? true : false;
   }
 
   //check the strike counter to see if previous roll was a spare or strike
 
-  function rollIsStrike(currentRoll, rollValue) {
+  function isRollStrike(currentRoll, rollValue) {
     return currentRoll === "rollOne" && rollValue === 10 ? true : false;
   }
 
   function isStrikeCounterActive(counter) {
-    counter > 0 ? true : false;
+    return counter > 0 ? true : false;
   }
 
   //check to see if it's a new frame
@@ -27,7 +27,7 @@
   }
   //if roll is rollTwo check to see if roll value exceeds maximum possible score for that frame
     //if so do nothing
-  function rollIsInValidRange(currentRoll, prevRoll) {
+  function isRollInValidRange(currentRoll, prevRoll) {
     return prevRoll + currentRoll <= 10 ? true : false;
     }
     //if not update the state of that roll with new value
@@ -60,4 +60,4 @@
     //if so, end the game
   //if not, update the current frame to the next
 
-  module.exports = { gameIsOver, rollIsStrike, isStrikeCounterActive, isNewFrame, calculateFrameTotal, isRollTwo, rollIsInValidRange, isRollSpare }
+  module.exports = { isGameOver, isRollStrike, isStrikeCounterActive, isNewFrame, calculateFrameTotal, isRollTwo, isRollInValidRange, isRollSpare }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import RollTable from './RollTable.jsx';
 import ScoreTable from './ScoreTable.jsx';
-import { gameIsOver, isStrikeCounterActive, rollIsStrike, isNewFrame, isRollTwo, calculateFrameTotal, rollIsInValidRange, isRollSpare } from './controllers/ScoreTableHelpers.js';
+import { isGameOver, isStrikeCounterActive, isRollStrike, isNewFrame, isRollTwo, calculateFrameTotal, isRollInValidRange, isRollSpare } from './controllers/ScoreTableHelpers.js';
 
 export default class Board extends Component {
   constructor(props) {
@@ -12,12 +12,13 @@ export default class Board extends Component {
       frameTotal: 0,
       gameTotal: 0,
       currentRoll: "rollOne",
-      currentFrame: "gameOver",
-      strikeCounter: 0
+      currentFrame: "frameOne",
+      strikeCounter: 0,
+      frameNames: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
     }
 
     this.handleClick = this.handleClick.bind(this);
-
   }
 
   handleClick(event) {
@@ -26,22 +27,16 @@ export default class Board extends Component {
 
   handleFlow(event) {
     const rollValue = parseInt(event.target.innerText);
+    const decrementedStrikeCounter = this.state.strikeCounter + this.decrementStrikeCounter(this.state.strikeCounter);
 
-    this.decrementStrikeCounter(this.state.strikeCounter);
     this.setNewFrame(this.state.currentRoll, this.state.rollOne);
-    this.handleRoll(this.state.currentRoll, rollValue, this.state.rollOne);
+    this.handleRoll(this.state.currentRoll, rollValue, this.state.rollOne, decrementedStrikeCounter, this.state.gameTotal);
     this.handleGameOver(this.state.currentFrame, this.state.gameTotal);
   }
 
 
   decrementStrikeCounter(strikeCounter) {
-    if ( isStrikeCounterActive(strikeCounter) ) {
-      strikeCounter = strikeCounter - 1;
-      //TODO: UPDATE PREVIOUS FRAME TOTAL IN DOM
-      this.setState({
-        strikeCounter
-      })
-    }
+    return isStrikeCounterActive(strikeCounter) ? -1 : 0;
   }
 
   setNewFrame(currentRoll, rollOne) {
@@ -55,57 +50,61 @@ export default class Board extends Component {
     }
   }
 
-  handleRoll(currentRoll, rollValue, rollOne) {
+  handleRoll(currentRoll, rollValue, rollOne, strikeCounter, gameTotal) {
     const frameTotal = calculateFrameTotal(currentRoll, rollOne, rollValue)
 
-    var totalCounter = 0;
-    if (rollIsStrike(currentRoll, rollValue)) {
-      console.log("roll is a strike");
-      this.finalizeFrame(rollValue, frameTotal, 2);
-    } else if (isRollSpare(currentRoll, frameTotal)) {
-      console.log("roll is a spare");
-      this.finalizeFrame(rollValue, frameTotal, 1)
-    } else {
-      this.finalizeFrame(rollValue, frameTotal, 0)
-    }
+    var counter = this.handleStrike(currentRoll, rollValue, frameTotal);
+
+    this.finalizeFrame(currentRoll, rollValue, frameTotal, counter, strikeCounter, gameTotal)
   }
 
-  handleGameOver(currentFrame, gameTotal) {
-    if (gameIsOver(currentFrame)) {
-      window.alert(`Nice game! Your score is: ${gameTotal}`)
-      return;
-    }
-  }
-
-  getNewRoll(rollValue) {
+  getNewRoll(currentRoll, rollValue) {
     let newRoll;
-    if (isRollTwo(this.state.currentRoll) || rollValue === 10) {
+    if (isRollTwo(currentRoll) || rollValue === 10) {
       return "rollOne";
     } else {
       return "rollTwo";
     }
   }
 
-  finalizeFrame(rollValue, frameTotal, strikeCounter) {
-    const gameTotal = this.state.gameTotal + rollValue;
-    let newRoll = this.getNewRoll(rollValue);
-    strikeCounter = this.state.strikeCounter + strikeCounter;
+  handleStrike(currentRoll, rollValue, frameTotal) {
+    let counter = 0;
+    if (isRollStrike(currentRoll, rollValue)) {
+      console.log("roll is a strike");
+      counter = 2;
+    } else if (isRollSpare(currentRoll, frameTotal)) {
+      console.log("roll is a spare");
+      counter = 1
+    }
+    return counter;
+  }
+
+  finalizeFrame(currentRoll, rollValue, frameTotal, newStrikeCounter, oldStrikeCounter, gameTotal) {
+    gameTotal = gameTotal + rollValue;
+    let newRoll = this.getNewRoll(currentRoll, rollValue);
+    newStrikeCounter = oldStrikeCounter + newStrikeCounter;
     this.setState(
       {
         [this.state.currentRoll]: rollValue,
         frameTotal,
         gameTotal,
-        strikeCounter: strikeCounter,
+        strikeCounter: newStrikeCounter,
         currentRoll: newRoll
     });
   }
 
+  handleGameOver(currentFrame, gameTotal) {
+    if (isGameOver(currentFrame)) {
+      window.alert(`Nice game! Your score is: ${gameTotal}`)
+      return;
+    }
+  }
 
   render() {
     return (
       <div id="board">
        <RollTable rollOne={this.state.rollOne} currentRoll={this.state.currentRoll} handleClick={this.handleClick} />
-       <ScoreTable rollOne={this.state.rollOne} rollTwo={this.state.rollTwo} frameTotal={this.state.frameTotal}/>
+       <ScoreTable frameNames={this.state.frameNames}/>
 
       </div>
     )
