@@ -12,7 +12,7 @@ export default class Board extends Component {
       frameTotal: 0,
       gameTotal: 0,
       currentRoll: "rollOne",
-      currentFrame: "frameOne",
+      currentFrame: "gameOver",
       strikeCounter: 0
     }
 
@@ -27,38 +27,12 @@ export default class Board extends Component {
   handleFlow(event) {
     const rollValue = parseInt(event.target.innerText);
 
-    if (gameIsOver(this.state.currentFrame)) {
-      window.alert(`Nice game! Your score is: ${this.state.gameTotal}`)
-      return;
-    }
-
-    //decrements strike counter
     this.decrementStrikeCounter(this.state.strikeCounter);
-
     this.setNewFrame(this.state.currentRoll, this.state.rollOne);
-
-    // if (isRollTwo(this.state.currentRoll) && !rollIsInValidRange(this.state.rollOne, rollValue)) {
-    //   window.alert("roll is not valid");
-    //   return;
-    // }
-    // console.log("roll is in valid range");
-
-    //STRIKE HANDLER
-    const frameTotal = calculateFrameTotal(this.state.currentRoll, this.state.rollOne, rollValue)
-
-    var totalCounter = 0;
-    if (rollIsStrike(this.state.currentRoll, rollValue)) {
-      console.log("roll is a strike");
-      this.finalizeFrame(rollValue, frameTotal, 2);
-    } else if (isRollSpare(this.state.currentRoll, frameTotal)) {
-      console.log("roll is a spare");
-      this.finalizeFrame(rollValue, frameTotal, 1)
-    } else {
-      this.finalizeFrame(rollValue, frameTotal, 0)
-    }
-
-
+    this.handleRoll(this.state.currentRoll, rollValue, this.state.rollOne);
+    this.handleGameOver(this.state.currentFrame, this.state.gameTotal);
   }
+
 
   decrementStrikeCounter(strikeCounter) {
     if ( isStrikeCounterActive(strikeCounter) ) {
@@ -78,6 +52,28 @@ export default class Board extends Component {
         rollTwo: 0,
         frameTotal: 0
       } )
+    }
+  }
+
+  handleRoll(currentRoll, rollValue, rollOne) {
+    const frameTotal = calculateFrameTotal(currentRoll, rollOne, rollValue)
+
+    var totalCounter = 0;
+    if (rollIsStrike(currentRoll, rollValue)) {
+      console.log("roll is a strike");
+      this.finalizeFrame(rollValue, frameTotal, 2);
+    } else if (isRollSpare(currentRoll, frameTotal)) {
+      console.log("roll is a spare");
+      this.finalizeFrame(rollValue, frameTotal, 1)
+    } else {
+      this.finalizeFrame(rollValue, frameTotal, 0)
+    }
+  }
+
+  handleGameOver(currentFrame, gameTotal) {
+    if (gameIsOver(currentFrame)) {
+      window.alert(`Nice game! Your score is: ${gameTotal}`)
+      return;
     }
   }
 
