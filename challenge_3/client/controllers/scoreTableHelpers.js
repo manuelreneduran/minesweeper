@@ -1,51 +1,67 @@
-//User clicks a score button
+function isGameOver(currentFrame) {
+  return currentFrame === 0 ? true : false;
+}
 
-
-//check to make sure game isn't over
-  //if so do nothing
-  function isGameOver(currentFrame) {
-    return currentFrame === 0 ? true : false;
+function handleGameOver(currentFrame, gameTotal) {
+  if (isGameOver(currentFrame)) {
+    window.alert(`Nice game! Your score is: ${gameTotal}`)
+    return;
   }
+}
 
-  //check the strike counter to see if previous roll was a spare or strike
+function isRollStrike(currentRoll, rollValue) {
+  return currentRoll === "rollOne" && rollValue === 10 ? true : false;
+}
 
-  function isRollStrike(currentRoll, rollValue) {
-    return currentRoll === "rollOne" && rollValue === 10 ? true : false;
+function isRollSpare(currentRoll, frameTotal) {
+  return currentRoll === "rollTwo" && frameTotal === 10 ? true : false;
+}
+
+function isStrikeCounterActive(counter) {
+  return counter > 0 ? true : false;
+}
+
+function decrementStrikeCounter(strikeCounter) {
+  return isStrikeCounterActive(strikeCounter) ? -1 : 0;
+}
+
+function handleStrike(currentRoll, rollValue, frameTotal) {
+  let counter = 0;
+  if (isRollStrike(currentRoll, rollValue)) {
+    console.log("roll is a strike");
+    counter = 2;
+  } else if (isRollSpare(currentRoll, frameTotal)) {
+    console.log("roll is a spare");
+    counter = 1
   }
+  return counter;
+}
 
-  function isStrikeCounterActive(counter) {
-    return counter > 0 ? true : false;
-  }
+function isNewFrame(currentRoll) {
+  return currentRoll === "rollOne" ? true : false;
+}
 
-  //check to see if it's a new frame
-  function isNewFrame(currentRoll) {
-    return currentRoll === "rollOne" ? true : false;
-  }
-//check to see what the current roll is
-  function isRollTwo(roll) {
-    return roll === "rollTwo" ? true : false;
-  }
-  //if roll is rollTwo check to see if roll value exceeds maximum possible score for that frame
-    //if so do nothing
-  function isRollInValidRange(currentRoll, prevRoll) {
-    return prevRoll + currentRoll <= 10 ? true : false;
-    }
-    //if not update the state of that roll with new value
-      //as well as the frame total and game total
-  function calculateFrameTotal(currentRoll, rollOneVal, newRollVal) {
-    //if it's roll one, frameTotal === roll value
-    if (currentRoll === "rollOne") {
-      return newRollVal;
-    }
-    //if it's roll two, frameTotal === rollOne value plus current value
-    return rollOneVal + newRollVal;
-  }
+function isRollTwo(roll) {
+  return roll === "rollTwo" ? true : false;
+}
 
-//check to see if frame total is a strike or a spare
-  //if so, update strike counter to either 1 or 2
+function getNextRoll(currentRoll, rollValue) {
+  let newRoll;
+  if (isRollTwo(currentRoll) || rollValue === 10) {
+    return "rollOne";
+  } else {
+    return "rollTwo";
+  }
+}
 
-  function isRollSpare(currentRoll, frameTotal) {
-    return currentRoll === "rollTwo" && frameTotal === 10 ? true : false;  }
+function calculateFrameTotal(currentRoll, rollOneVal, newRollVal) {
+  if (currentRoll === "rollOne") {
+    return newRollVal;
+  }
+  return rollOneVal + newRollVal;
+}
+
+
 
   //TODO ****************JQUERY  */if so, add value to previous frame's total subtract either 1 or 2 from strike counter
 
@@ -60,4 +76,5 @@
     //if so, end the game
   //if not, update the current frame to the next
 
-  module.exports = { isGameOver, isRollStrike, isStrikeCounterActive, isNewFrame, calculateFrameTotal, isRollTwo, isRollInValidRange, isRollSpare }
+  module.exports = { isGameOver, isRollStrike, isStrikeCounterActive, isNewFrame, calculateFrameTotal, isRollTwo, isRollSpare,
+  handleGameOver, decrementStrikeCounter, handleStrike, getNextRoll }
