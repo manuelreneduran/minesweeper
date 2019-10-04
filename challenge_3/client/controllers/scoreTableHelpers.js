@@ -2,11 +2,8 @@ function isGameOver(currentFrame) {
   return currentFrame === 0 ? true : false;
 }
 
-function handleGameOver(currentFrame, gameTotal) {
-  if (isGameOver(currentFrame)) {
-    window.alert(`Nice game! Your score is: ${gameTotal}`)
-    return;
-  }
+function handleGameOver(gameTotal) {
+  window.alert(`Nice game! Your score is: ${gameTotal}`)
 }
 
 function isRollStrike(currentRoll, rollValue) {

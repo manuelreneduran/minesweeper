@@ -12,12 +12,10 @@ export default class Board extends Component {
       frameTotal: 0,
       gameTotal: 0,
       currentRoll: "rollOne",
-      currentFrame: 0,
+      currentFrame: 9,
       strikeCounter: 0,
       frameNames: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-
     }
-
     this.handleClick = this.handleClick.bind(this);
   }
 
@@ -26,16 +24,12 @@ export default class Board extends Component {
   }
 
   handleFlow(event) {
-    const rollValue = parseInt(event.target.innerText);
-    const nextFrame = getNextFrame(this.state.currentFrame);
-    handleGameOver(nextFrame, this.state.gameTotal);
-
-    const decrementedStrikeCounter = this.state.strikeCounter + decrementStrikeCounter(this.state.strikeCounter);
+    let rollValue = parseInt(event.target.innerText);
+    let nextFrame = getNextFrame(this.state.currentFrame);
+    let decrementedStrikeCounter = this.state.strikeCounter + decrementStrikeCounter(this.state.strikeCounter);
 
     this.setNewFrame(this.state.currentRoll, this.state.rollOne, nextFrame);
-
-    this.handleRoll(this.state.currentRoll, rollValue, this.state.rollOne, decrementedStrikeCounter, this.state.gameTotal);
-
+    this.handleRoll(this.state.currentRoll, rollValue, this.state.rollOne, decrementedStrikeCounter, this.state.gameTotal, nextFrame);
   }
 
   setNewFrame(currentRoll, rollOne, nextFrame) {
@@ -50,25 +44,28 @@ export default class Board extends Component {
     }
   }
 
-  handleRoll(currentRoll, rollValue, rollOne, strikeCounter, gameTotal) {
-    const frameTotal = calculateFrameTotal(currentRoll, rollOne, rollValue)
+  handleRoll(currentRoll, rollValue, rollOne, strikeCounter, gameTotal, nextFrame) {
+    let frameTotal = calculateFrameTotal(currentRoll, rollOne, rollValue)
+    let counter = handleStrike(currentRoll, rollValue, frameTotal);
 
-    var counter = handleStrike(currentRoll, rollValue, frameTotal);
-
-    this.finalizeFrame(currentRoll, rollValue, frameTotal, counter, strikeCounter, gameTotal)
+    this.finalizeFrame(currentRoll, rollValue, frameTotal, counter, strikeCounter, gameTotal, nextFrame)
   }
 
-  finalizeFrame(currentRoll, rollValue, frameTotal, newStrikeCounter, oldStrikeCounter, gameTotal) {
+  finalizeFrame(currentRoll, rollValue, frameTotal, newStrikeCounter, oldStrikeCounter, gameTotal, nextFrame) {
     gameTotal = gameTotal + rollValue;
     let newRoll = getNextRoll(currentRoll, rollValue);
     newStrikeCounter = oldStrikeCounter + newStrikeCounter;
-    this.setState(
-      {
-        [this.state.currentRoll]: rollValue,
-        frameTotal,
-        gameTotal,
-        strikeCounter: newStrikeCounter,
-        currentRoll: newRoll
+    this.setState({
+      [this.state.currentRoll]: rollValue,
+      frameTotal,
+      gameTotal,
+      strikeCounter: newStrikeCounter,
+      currentRoll: newRoll
+    }, () => {
+      if ( isGameOver(nextFrame) ) {
+        handleGameOver(this.state.gameTotal);
+        return;
+      }
     });
   }
 
@@ -79,7 +76,6 @@ export default class Board extends Component {
       <div id="board">
        <RollTable rollOne={this.state.rollOne} currentRoll={this.state.currentRoll} handleClick={this.handleClick} />
        <ScoreTable frameNames={this.state.frameNames}/>
-
       </div>
     )
   }
