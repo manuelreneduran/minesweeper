@@ -61,6 +61,9 @@ function calculateFrameTotal(currentRoll, rollOneVal, newRollVal) {
   return rollOneVal + newRollVal;
 }
 
+function getNextFrame(currentFrame) {
+  return currentFrame < 10 ? currentFrame + 1 : 0;
+}
 
 
   //TODO ****************JQUERY  */if so, add value to previous frame's total subtract either 1 or 2 from strike counter
@@ -77,4 +80,4 @@ function calculateFrameTotal(currentRoll, rollOneVal, newRollVal) {
   //if not, update the current frame to the next
 
   module.exports = { isGameOver, isRollStrike, isStrikeCounterActive, isNewFrame, calculateFrameTotal, isRollTwo, isRollSpare,
-  handleGameOver, decrementStrikeCounter, handleStrike, getNextRoll }
+  handleGameOver, decrementStrikeCounter, handleStrike, getNextRoll, getNextFrame }
