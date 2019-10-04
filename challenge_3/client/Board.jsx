@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import RollTable from './RollTable.jsx';
 import ScoreTable from './ScoreTable.jsx';
-import { gameIsOver, isNewFrame, isRollTwo, calculateFrameTotal, rollIsInValidRange, isRollStrike, isRollSpare } from './controllers/ScoreTableHelpers.js';
+import { gameIsOver, isStrikeCounterActive, isNewFrame, isRollTwo, calculateFrameTotal, rollIsInValidRange, isRollStrike, isRollSpare } from './controllers/ScoreTableHelpers.js';
 
 export default class Board extends Component {
   constructor(props) {
@@ -35,13 +35,13 @@ export default class Board extends Component {
     //decrements strike counter
     let strikeCounter = this.state.strikeCounter;
 
-      if ( strikeCounter > 0 ) {
-        strikeCounter = strikeCounter - 1;
-        //TODO: UPDATE PREVIOUS FRAME TOTAL
-        this.setState({
-          strikeCounter
-        })
-      }
+    if ( isStrikeCounterActive(strikeCounter) ) {
+      strikeCounter = strikeCounter - 1;
+      //TODO: UPDATE PREVIOUS FRAME TOTAL IN DOM
+      this.setState({
+        strikeCounter
+      })
+    }
 
     if (isNewFrame(this.state.currentRoll)) {
       console.log("is new frame");
