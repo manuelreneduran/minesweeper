@@ -37,7 +37,8 @@
     return rollOneVal + newRollVal;
   }
 
-
+//check to see if frame total is a strike or a spare
+  //if so, update strike counter to either 1 or 2
   function isRollStrike(rollValue) {
     return rollValue === 10 ? true : false;
   }
@@ -46,12 +47,11 @@
     return frameTotal === 10 ? true : false;
   }
 
-  //****************JQUERY  */if so, add value to previous frame's total subtract either 1 or 2 from strike counter
+  //TODO ****************JQUERY  */if so, add value to previous frame's total subtract either 1 or 2 from strike counter
 
-//check to see if frame total is a strike or a spare
-  //if so, update strike counter to either 1 or 2
 
-//update the active frame with the frame total and the roll value
+
+//TODO ****************JQUERY */update the active frame with the frame total and the roll value
   //update the current roll to the next roll
 
 //check if the next roll is roll one

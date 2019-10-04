@@ -52,8 +52,6 @@ export default class Board extends Component {
       } )
     }
 
-    console.log("game's not over");
-
     if (isRollTwo(this.state.currentRoll) && !rollIsInValidRange(this.state.rollOne, rollValue)) {
       window.alert("roll is not valid");
       return;
@@ -84,6 +82,17 @@ export default class Board extends Component {
     if (newCounter === 1 || newCounter === 2) {
       this.setState({ strikeCounter: totalCounter });
     }
+
+    let newRoll;
+    if (isRollTwo(this.state.currentRoll)) {
+      newRoll = "rollOne";
+    } else {
+      newRoll = "rollTwo";
+    }
+
+    this.setState({
+      currentRoll: newRoll
+    })
   }
 
 
