@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import RollTable from './RollTable.jsx';
 import ScoreTable from './ScoreTable.jsx';
-import { gameIsOver, isStrikeCounterActive, isNewFrame, isRollTwo, calculateFrameTotal, rollIsInValidRange, isRollStrike, isRollSpare } from './controllers/ScoreTableHelpers.js';
+import { gameIsOver, isStrikeCounterActive, rollIsStrike, isNewFrame, isRollTwo, calculateFrameTotal, rollIsInValidRange, isRollSpare } from './controllers/ScoreTableHelpers.js';
 
 export default class Board extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      rollOne: 1,
+      rollOne: 0,
       rollTwo: 0,
       frameTotal: 0,
       gameTotal: 0,
@@ -58,7 +58,24 @@ export default class Board extends Component {
     }
     console.log("roll is in valid range");
 
+
+    //STRIKE HANDLER
     const frameTotal = calculateFrameTotal(this.state.currentRoll, this.state.rollOne, rollValue)
+
+    var totalCounter = 0;
+    if (rollIsStrike(this.state.currentRoll, rollValue)) {
+      console.log("roll is a strike");
+      totalCounter = strikeCounter + 2;
+      this.setState({ strikeCounter: totalCounter });
+
+    } else if (isRollSpare(this.state.currentRoll, frameTotal)) {
+      console.log("roll is a spare");
+      totalCounter = strikeCounter + 1;
+      this.setState({ strikeCounter: totalCounter });
+    }
+
+
+
     const gameTotal = this.state.gameTotal + rollValue;
 
     this.setState(
@@ -67,21 +84,6 @@ export default class Board extends Component {
         frameTotal,
         gameTotal
     });
-
-    var newCounter = 0;
-    if (isRollStrike(rollValue)) {
-      console.log("roll is a strike");
-      newCounter = 2;
-    } else if (isRollSpare(frameTotal) && this.state.currentRoll === "rollTwo") {
-      console.log("roll is a spare");
-      newCounter = 1;
-    }
-
-    var totalCounter = strikeCounter + newCounter;
-
-    if (newCounter === 1 || newCounter === 2) {
-      this.setState({ strikeCounter: totalCounter });
-    }
 
     let newRoll;
     if (isRollTwo(this.state.currentRoll)) {
