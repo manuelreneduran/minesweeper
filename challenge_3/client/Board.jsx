@@ -33,31 +33,15 @@ export default class Board extends Component {
     }
 
     //decrements strike counter
-    let strikeCounter = this.state.strikeCounter;
+    this.decrementStrikeCounter(this.state.strikeCounter);
 
-    if ( isStrikeCounterActive(strikeCounter) ) {
-      strikeCounter = strikeCounter - 1;
-      //TODO: UPDATE PREVIOUS FRAME TOTAL IN DOM
-      this.setState({
-        strikeCounter
-      })
-    }
+    this.setNewFrame(this.state.currentRoll, this.state.rollOne);
 
-    if (isNewFrame(this.state.currentRoll)) {
-      console.log("is new frame");
-      this.setState( {
-        rollOne: 0,
-        rollTwo: 0,
-        frameTotal: 0
-      } )
-    }
-
-    if (isRollTwo(this.state.currentRoll) && !rollIsInValidRange(this.state.rollOne, rollValue)) {
-      window.alert("roll is not valid");
-      return;
-    }
-    console.log("roll is in valid range");
-
+    // if (isRollTwo(this.state.currentRoll) && !rollIsInValidRange(this.state.rollOne, rollValue)) {
+    //   window.alert("roll is not valid");
+    //   return;
+    // }
+    // console.log("roll is in valid range");
 
     //STRIKE HANDLER
     const frameTotal = calculateFrameTotal(this.state.currentRoll, this.state.rollOne, rollValue)
@@ -65,43 +49,66 @@ export default class Board extends Component {
     var totalCounter = 0;
     if (rollIsStrike(this.state.currentRoll, rollValue)) {
       console.log("roll is a strike");
-      totalCounter = strikeCounter + 2;
-      this.setState({ strikeCounter: totalCounter });
-
+      this.finalizeFrame(rollValue, frameTotal, 2);
     } else if (isRollSpare(this.state.currentRoll, frameTotal)) {
       console.log("roll is a spare");
-      totalCounter = strikeCounter + 1;
-      this.setState({ strikeCounter: totalCounter });
+      this.finalizeFrame(rollValue, frameTotal, 1)
+    } else {
+      this.finalizeFrame(rollValue, frameTotal, 0)
     }
 
 
+  }
 
+  decrementStrikeCounter(strikeCounter) {
+    if ( isStrikeCounterActive(strikeCounter) ) {
+      strikeCounter = strikeCounter - 1;
+      //TODO: UPDATE PREVIOUS FRAME TOTAL IN DOM
+      this.setState({
+        strikeCounter
+      })
+    }
+  }
+
+  setNewFrame(currentRoll, rollOne) {
+    if (isNewFrame(currentRoll) || rollOne === 10) {
+      console.log("is new frame");
+      this.setState( {
+        rollOne: 0,
+        rollTwo: 0,
+        frameTotal: 0
+      } )
+    }
+  }
+
+  getNewRoll(rollValue) {
+    let newRoll;
+    if (isRollTwo(this.state.currentRoll) || rollValue === 10) {
+      return "rollOne";
+    } else {
+      return "rollTwo";
+    }
+  }
+
+  finalizeFrame(rollValue, frameTotal, strikeCounter) {
     const gameTotal = this.state.gameTotal + rollValue;
-
+    let newRoll = this.getNewRoll(rollValue);
+    strikeCounter = this.state.strikeCounter + strikeCounter;
     this.setState(
       {
         [this.state.currentRoll]: rollValue,
         frameTotal,
-        gameTotal
+        gameTotal,
+        strikeCounter: strikeCounter,
+        currentRoll: newRoll
     });
-
-    let newRoll;
-    if (isRollTwo(this.state.currentRoll)) {
-      newRoll = "rollOne";
-    } else {
-      newRoll = "rollTwo";
-    }
-
-    this.setState({
-      currentRoll: newRoll
-    })
   }
 
 
   render() {
     return (
       <div id="board">
-       <RollTable handleClick={this.handleClick} />
+       <RollTable rollOne={this.state.rollOne} currentRoll={this.state.currentRoll} handleClick={this.handleClick} />
        <ScoreTable rollOne={this.state.rollOne} rollTwo={this.state.rollTwo} frameTotal={this.state.frameTotal}/>
 
       </div>
