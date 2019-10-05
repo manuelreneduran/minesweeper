@@ -62,19 +62,5 @@ function getNextFrame(currentFrame) {
   return currentFrame < 10 ? currentFrame + 1 : 0;
 }
 
-
-  //TODO ****************JQUERY  */if so, add value to previous frame's total subtract either 1 or 2 from strike counter
-
-
-
-//TODO ****************JQUERY */update the active frame with the frame total and the roll value
-  //update the current roll to the next roll
-    //use isRollTwo function
-
-//check if the next roll is roll one
-  //if so, check if the current frame is the last
-    //if so, end the game
-  //if not, update the current frame to the next
-
   module.exports = { isGameOver, isRollStrike, isStrikeCounterActive, isNewFrame, calculateFrameTotal, isRollTwo, isRollSpare,
   handleGameOver, decrementStrikeCounter, handleStrike, getNextRoll, getNextFrame }

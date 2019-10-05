@@ -3,6 +3,8 @@ import RollTable from './RollTable.jsx';
 import ScoreTable from './ScoreTable.jsx';
 import { isGameOver, isStrikeCounterActive, isRollStrike, isNewFrame, isRollTwo, calculateFrameTotal, isRollSpare, handleGameOver, decrementStrikeCounter, handleStrike, getNextRoll, getNextFrame } from './controllers/ScoreTableHelpers.js';
 
+
+
 export default class Board extends Component {
   constructor(props) {
     super(props)
@@ -12,7 +14,7 @@ export default class Board extends Component {
       frameTotal: 0,
       gameTotal: 0,
       currentRoll: "rollOne",
-      currentFrame: 9,
+      currentFrame: 0,
       strikeCounter: 0,
       frameNames: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     }
@@ -34,7 +36,6 @@ export default class Board extends Component {
 
   setNewFrame(currentRoll, rollOne, nextFrame) {
     if (isNewFrame(currentRoll) || rollOne === 10) {
-      console.log("is new frame");
       this.setState( {
         rollOne: 0,
         rollTwo: 0,
@@ -53,14 +54,14 @@ export default class Board extends Component {
 
   finalizeFrame(currentRoll, rollValue, frameTotal, newStrikeCounter, oldStrikeCounter, gameTotal, nextFrame) {
     gameTotal = gameTotal + rollValue;
-    let newRoll = getNextRoll(currentRoll, rollValue);
+    let nextRoll = getNextRoll(currentRoll, rollValue);
     newStrikeCounter = oldStrikeCounter + newStrikeCounter;
     this.setState({
       [this.state.currentRoll]: rollValue,
       frameTotal,
       gameTotal,
       strikeCounter: newStrikeCounter,
-      currentRoll: newRoll
+      currentRoll: nextRoll
     }, () => {
       if ( isGameOver(nextFrame) ) {
         handleGameOver(this.state.gameTotal);
@@ -75,7 +76,7 @@ export default class Board extends Component {
     return (
       <div id="board">
        <RollTable rollOne={this.state.rollOne} currentRoll={this.state.currentRoll} handleClick={this.handleClick} />
-       <ScoreTable frameNames={this.state.frameNames}/>
+       <ScoreTable rollOne={this.state.rollOne} rollTwo={this.state.rollTwo} currentFrame={this.state.currentFrame} frameNames={this.state.frameNames} frameTotal={this.state.frameTotal}/>
       </div>
     )
   }

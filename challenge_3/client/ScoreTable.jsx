@@ -2,15 +2,16 @@ import React from 'react';
 import ScoreTableCell from './ScoreTableCell.jsx';
 import './style.css'
 
-var counter = 0;
+let counter = 10;
 
-function ScoreTable({ frameNames }) {
+function ScoreTable({ rollOne, rollTwo, currentFrame, frameTotal, frameNames }) {
 
   const frames = frameNames.map(ele => {
-    return <ScoreTableCell key={counter++}
-    frameName={"frame" + ele} frameTotal={"frame-total-" + ele} rollOne={"roll-one-" + ele} rollTwo={"roll-two-" + ele}/>
+    counter = counter + 1;;
+    return <ScoreTableCell key={counter}
+    frameName={ele} currentFrame={currentFrame} frameTotal={frameTotal} rollOne={rollOne} rollTwo={rollTwo}/>
   })
-
+  counter = 0;
   return (
     <table id="score-table">
       {frames}
