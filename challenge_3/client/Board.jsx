@@ -13,7 +13,7 @@ export default class Board extends Component {
       gameTotal: 0,
       currentRoll: "rollOne",
       currentFrame: 0,
-      strikeCounter: 0,
+      strikeAndSpareContainer: [],
       frames: null
     }
     this.handleClick = this.handleClick.bind(this);
@@ -37,6 +37,17 @@ export default class Board extends Component {
     let frames = this.state.frames;
     let rollValue = parseInt(event.target.innerText);
     let frameTotal = 0;
+
+    // handle previous strike score
+    let strikeAndSpareContainer = this.state.strikeAndSpareContainer;
+
+    for (var container of strikeAndSpareContainer) {
+      if (container[2] > 0) {
+        container[0][2] = container[0][2] + rollValue;
+        container[2] = container[2] - 1;
+        frames[container[1]] = container[0];
+      }
+    }
 
     frames[this.state.currentFrame][2] = frameTotal;
 
@@ -63,14 +74,15 @@ export default class Board extends Component {
     }
 
     //strike handler
+    if (isRollStrike(this.state.currentRoll, rollValue)) {
+      strikeAndSpareContainer.push([frames[this.state.currentFrame], this.state.currentFrame, 2]);
+    } else if (isRollSpare(this.state.currentRoll, frameTotal)) {
+      strikeAndSpareContainer.push([frames[this.state.currentFrame], this.state.currentFrame, 1]);
+    }
 
     if (isRollStrike(this.state.currentRoll, rollValue) && this.state.currentRoll === "rollOne") {
       currentFrame = getNextFrame(currentFrame);
     }
-    let decrementedStrikeCounter = this.state.strikeCounter + decrementStrikeCounter(this.state.strikeCounter);
-
-    let strikeCounter = handleStrike(this.state.currentRoll, rollValue, frameTotal);
-    strikeCounter = decrementedStrikeCounter + strikeCounter;
 
     //update frameTotal
     frames[this.state.currentFrame][2] = frameTotal;
@@ -86,7 +98,10 @@ export default class Board extends Component {
       currentRoll: nextRoll,
       gameTotal,
       currentFrame,
-      strikeCounter
+    }, () => {
+      if (isGameOver(this.state.currentFrame)) {
+        handleGameOver(this.state.gameTotal);
+      }
     })
 
     // let nextFrame = getNextFrame(this.state.currentFrame);

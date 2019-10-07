@@ -1,5 +1,5 @@
 function isGameOver(currentFrame) {
-  return currentFrame === 0 ? true : false;
+  return currentFrame === 10 ? true : false;
 }
 
 function handleGameOver(gameTotal) {
