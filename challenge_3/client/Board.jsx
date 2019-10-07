@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import RollTable from './RollTable.jsx';
 import ScoreTable from './ScoreTable.jsx';
-import { isGameOver, isStrikeCounterActive, isRollStrike, isNewFrame, isRollTwo, calculateFrameTotal, isRollSpare, handleGameOver, decrementStrikeCounter, handleStrike, getNextRoll, getNextFrame } from './controllers/ScoreTableHelpers.js';
+import { createFrames, updatePreviousFrames, handleStrikeAndSpare, handleRollOne, handleRollTwo, handleAllRolls, isGameOver, isRollStrike, isRollSpare, handleGameOver, getNextRoll, getNextFrame } from './controllers/ScoreTableHelpers.js';
 
 
 
@@ -20,10 +20,7 @@ export default class Board extends Component {
   }
 
   componentDidMount() {
-    let frames = [];
-    for (let i = 0; i < 10; i++) {
-      frames.push([0, 0, 0]);
-    };
+    var frames = createFrames();
     this.setState({
       frames
     })
@@ -34,64 +31,38 @@ export default class Board extends Component {
   }
 
   handleFlow(event) {
-    let frames = this.state.frames;
-    let rollValue = parseInt(event.target.innerText);
-    let frameTotal = 0;
+    var rollValue = parseInt(event.target.innerText);
+    var frameTotal = 0;
+    var strikeAndSpareContainer = this.state.strikeAndSpareContainer;
+    var frames = this.state.frames;
+    var currentFrame = this.state.currentFrame;
+    var rollOne = this.state.rollOne;
+    var currentRoll = this.state.currentRoll;
 
-    // handle previous strike score
-    let strikeAndSpareContainer = this.state.strikeAndSpareContainer;
+    // updates previous frame totals if there was a strike or spare
+    var frames = updatePreviousFrames(strikeAndSpareContainer, frames, rollValue);
 
-    for (var container of strikeAndSpareContainer) {
-      if (container[2] > 0) {
-        container[0][2] = container[0][2] + rollValue;
-        container[2] = container[2] - 1;
-        frames[container[1]] = container[0];
-      }
-    }
+    //update certain values if roll one or roll two
+    var { frames, currentFrame, frameTotal, rollValue, rollOne } = handleAllRolls(currentRoll, frames, currentFrame, rollValue, frameTotal);
 
-    frames[this.state.currentFrame][2] = frameTotal;
+    //add to container if strike or spare
+    debugger;
+    strikeAndSpareContainer = handleStrikeAndSpare(currentRoll, rollValue, frames, strikeAndSpareContainer, frameTotal, currentFrame);
 
-
-    //if currentRoll is "rollOne", set value to frames[this.state.currentFrame][0]
-         //else set value to frames[this.state.currentFrame][1]
-         //set frame total
-    let currentFrame = this.state.currentFrame;
-
-    frames[this.state.currentFrame][2] = frameTotal;
-    let rollOne = this.state.rollOne;
-
-
-       //change the roll
-      //if it's a 10, set roll to rollOne
-    if (this.state.currentRoll === "rollOne") {
-      frames[this.state.currentFrame][0] = rollValue;
-      frameTotal = rollValue;
-      rollOne = rollValue;
-    } else {
-      frames[this.state.currentFrame][1] = rollValue;
-      frameTotal = frames[this.state.currentFrame][0] + rollValue;
-      currentFrame = this.state.currentFrame + 1;
-    }
-
-    //strike handler
-    if (isRollStrike(this.state.currentRoll, rollValue)) {
-      strikeAndSpareContainer.push([frames[this.state.currentFrame], this.state.currentFrame, 2]);
-    } else if (isRollSpare(this.state.currentRoll, frameTotal)) {
-      strikeAndSpareContainer.push([frames[this.state.currentFrame], this.state.currentFrame, 1]);
+    //update current frame if roll two
+    if (currentRoll === "rollTwo") {
+      currentFrame = currentFrame + 1;
     }
 
     if (isRollStrike(this.state.currentRoll, rollValue) && this.state.currentRoll === "rollOne") {
       currentFrame = getNextFrame(currentFrame);
     }
 
-    //update frameTotal
-    frames[this.state.currentFrame][2] = frameTotal;
-
     //update gameTotal
-    let gameTotal = this.state.gameTotal + rollValue;
+    var gameTotal = this.state.gameTotal + rollValue;
 
 
-    let nextRoll = getNextRoll(this.state.currentRoll, rollValue);
+    var nextRoll = getNextRoll(this.state.currentRoll, rollValue);
     this.setState({
       rollOne,
       frames,
@@ -104,50 +75,7 @@ export default class Board extends Component {
       }
     })
 
-    // let nextFrame = getNextFrame(this.state.currentFrame);
-    // let decrementedStrikeCounter = this.state.strikeCounter + decrementStrikeCounter(this.state.strikeCounter);
-
-    // this.setNewFrame(this.state.currentRoll, this.state.rollOne, nextFrame);
-    // this.handleRoll(this.state.currentRoll, rollValue, this.state.rollOne, decrementedStrikeCounter, this.state.gameTotal, nextFrame);
   }
-
-  // setNewFrame(currentRoll, rollOne, nextFrame) {
-  //   if (isNewFrame(currentRoll) || rollOne === 10) {
-  //     this.setState( {
-  //       rollOne: 0,
-  //       rollTwo: 0,
-  //       frameTotal: 0,
-  //       currentFrame: nextFrame
-  //     } )
-  //   }
-  // }
-
-  // handleRoll(currentRoll, rollValue, rollOne, strikeCounter, gameTotal, nextFrame) {
-  //   let frameTotal = calculateFrameTotal(currentRoll, rollOne, rollValue)
-  //   let counter = handleStrike(currentRoll, rollValue, frameTotal);
-
-  //   this.finalizeFrame(currentRoll, rollValue, frameTotal, counter, strikeCounter, gameTotal, nextFrame)
-  // }
-
-  // finalizeFrame(currentRoll, rollValue, frameTotal, newStrikeCounter, oldStrikeCounter, gameTotal, nextFrame) {
-  //   gameTotal = gameTotal + rollValue;
-  //   let nextRoll = getNextRoll(currentRoll, rollValue);
-  //   newStrikeCounter = oldStrikeCounter + newStrikeCounter;
-  //   this.setState({
-  //     [this.state.currentRoll]: rollValue,
-  //     frameTotal,
-  //     gameTotal,
-  //     strikeCounter: newStrikeCounter,
-  //     currentRoll: nextRoll
-  //   }, () => {
-  //     if ( isGameOver(nextFrame) ) {
-  //       handleGameOver(this.state.gameTotal);
-  //       return;
-  //     }
-  //   });
-  // }
-
-
 
   render() {
     return (
