@@ -83,5 +83,15 @@ function getNextFrame(currentFrame) {
   return currentFrame < 10 ? currentFrame + 1 : 0;
 }
 
+function updateCurrentFrame(currentRoll, currentFrame, rollValue) {
+  if (currentRoll === "rollTwo") {
+    return currentFrame + 1;
+  } else if (isRollStrike(currentRoll, rollValue) && currentRoll === "rollOne") {
+    return currentFrame + 1;
+  } else {
+    return currentFrame;
+  }
+}
+
   module.exports = { createFrames, updatePreviousFrames, handleStrikeAndSpare, handleRollOne, handleRollTwo, handleAllRolls, isGameOver, isRollStrike, isRollSpare,
-  handleGameOver, getNextRoll, getNextFrame }
+  handleGameOver, getNextRoll, getNextFrame, updateCurrentFrame }
