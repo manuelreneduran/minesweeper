@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import RollTable from './RollTable.jsx';
 import ScoreTable from './ScoreTable.jsx';
-import { createFrames, updatePreviousFrames, handleStrikeAndSpare, handleRollOne, handleRollTwo, handleAllRolls, isGameOver, isRollStrike, isRollSpare, handleGameOver, getNextRoll, getNextFrame, updateCurrentFrame } from './controllers/ScoreTableHelpers.js';
+import { createFrames, updatePreviousFrames, handleStrikeAndSpare, handleRollOne, handleRollTwo, handleAllRolls, isGameOver, isRollStrike, isRollSpare, handleGameOver, getNextRoll, getNextFrame, updateCurrentFrame, handleBonusRoll } from './controllers/ScoreTableHelpers.js';
 
 
 
@@ -14,7 +14,8 @@ export default class Board extends Component {
       currentRoll: "rollOne",
       currentFrame: 0,
       strikeAndSpareContainer: [],
-      frames: null
+      frames: null,
+      bonusRollCounter: 0
     }
     this.handleClick = this.handleClick.bind(this);
   }
@@ -34,11 +35,23 @@ export default class Board extends Component {
     var currentFrame = this.state.currentFrame;
     var rollOne = this.state.rollOne;
     var currentRoll = this.state.currentRoll;
+    var bonusRollCounter = this.state.bonusRollCounter;
+    var gameTotal = this.state.gameTotal;
 
-    this.handleFlow(rollValue, frameTotal, strikeAndSpareContainer, frames, currentFrame, rollOne, currentRoll, event);
+    this.handleFlow(rollValue, frameTotal, strikeAndSpareContainer, frames, currentFrame, rollOne, currentRoll, bonusRollCounter, gameTotal, event);
   }
 
-  handleFlow(rollValue, frameTotal, strikeAndSpareContainer, frames, currentFrame, rollOne, currentRoll, event) {
+  handleFlow(rollValue, frameTotal, strikeAndSpareContainer, frames, currentFrame, rollOne, currentRoll, bonusRollCounter, gameTotal, event) {
+
+    //updates frame 9 if user has a bonus roll
+    if (bonusRollCounter > 0) {
+      var {frames, bonusRollCounter} = handleBonusRoll(frames, rollValue, bonusRollCounter);
+
+      this.setState({frames, bonusRollCounter});
+      return;
+    }
+    //handle game over
+    handleGameOver(currentFrame, frames, bonusRollCounter);
 
     // updates previous frame totals if there was a strike or spare
     var frames = updatePreviousFrames(strikeAndSpareContainer, frames, rollValue);
@@ -47,13 +60,10 @@ export default class Board extends Component {
     var { frames, currentFrame, frameTotal, rollValue, rollOne } = handleAllRolls(currentRoll, frames, currentFrame, rollValue, frameTotal);
 
     //add to container if strike or spare
-    strikeAndSpareContainer = handleStrikeAndSpare(currentRoll, rollValue, frames, strikeAndSpareContainer, frameTotal, currentFrame);
+    var { strikeAndSpareContainer, bonusRollCounter } = handleStrikeAndSpare(currentRoll, rollValue, frames, strikeAndSpareContainer, frameTotal, currentFrame);
 
     //update current frame if roll two
     currentFrame = updateCurrentFrame(currentRoll, currentFrame, rollValue);
-
-    //update gameTotal
-    var gameTotal = this.state.gameTotal + rollValue;
 
     //update roll
     var nextRoll = getNextRoll(this.state.currentRoll, rollValue);
@@ -62,14 +72,13 @@ export default class Board extends Component {
       rollOne,
       frames,
       currentRoll: nextRoll,
-      gameTotal,
       currentFrame,
+      bonusRollCounter
     }, () => {
-      if (isGameOver(this.state.currentFrame)) {
-        handleGameOver(this.state.gameTotal);
+      if (bonusRollCounter > 0) {
+        window.alert(`You get ${bonusRollCounter} bonus rolls! Roll Away!`);
       }
     })
-
   }
 
   render() {

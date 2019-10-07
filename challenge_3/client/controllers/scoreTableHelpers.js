@@ -6,6 +6,12 @@ function createFrames() {
   return frames;
 }
 
+function handleBonusRoll(frames, rollValue, bonusRollCounter) {
+  frames[9][2] = frames[9][2] + rollValue;
+  bonusRollCounter--;
+  return {frames, bonusRollCounter};
+}
+
 function updatePreviousFrames(strikeAndSpareContainer, frames, rollValue) {
   if (strikeAndSpareContainer.length > 0) {
     for (var container of strikeAndSpareContainer) {
@@ -25,9 +31,19 @@ function handleStrikeAndSpare(currentRoll, rollValue, frames, strikeAndSpareCont
   } else if (isRollSpare(currentRoll, frameTotal)) {
     strikeAndSpareContainer.push([frames[currentFrame], currentFrame, 1]);
   }
-  return strikeAndSpareContainer;
+  var bonusRollCounter = setBonusRollCounter(currentFrame, currentRoll, rollValue, frameTotal);
+  return {strikeAndSpareContainer, bonusRollCounter};
 }
 
+function setBonusRollCounter(currentFrame, currentRoll, rollValue, frameTotal) {
+  if (rollValue === 10 && currentFrame === 9 || currentFrame === 10) {
+    return 2;
+  } else if (isRollSpare(currentRoll, frameTotal) && currentFrame === (9 || 10)) {
+    return 1;
+  } else {
+    return 0;
+  }
+}
 function handleRollOne(frames, currentFrame, rollValue, frameTotal) {
   frames[currentFrame][0] = rollValue;
   var rollOne = rollValue;
@@ -55,11 +71,22 @@ function handleAllRolls(currentRoll, frames, currentFrame, rollValue, frameTotal
 }
 
 function isGameOver(currentFrame) {
-  return currentFrame === 10 ? true : false;
+  return currentFrame > 9 ? true : false;
 }
 
-function handleGameOver(gameTotal) {
-  window.alert(`Nice game! Your score is: ${gameTotal}`)
+function handleGameOver(currentFrame, frames, bonusRollCounter) {
+  if (bonusRollCounter === 0 && isGameOver(currentFrame)) {
+    var gameTotal = calculateGameTotal(frames);
+    window.alert(`Nice game! Your score is: ${gameTotal}`)
+  }
+}
+
+function calculateGameTotal(frames) {
+  var sum = 0;
+  for (var frame of frames) {
+    sum += frame[2];
+  }
+  return sum;
 }
 
 function isRollStrike(currentRoll, rollValue) {
@@ -94,4 +121,4 @@ function updateCurrentFrame(currentRoll, currentFrame, rollValue) {
 }
 
   module.exports = { createFrames, updatePreviousFrames, handleStrikeAndSpare, handleRollOne, handleRollTwo, handleAllRolls, isGameOver, isRollStrike, isRollSpare,
-  handleGameOver, getNextRoll, getNextFrame, updateCurrentFrame }
+  handleGameOver, getNextRoll, getNextFrame, updateCurrentFrame, handleBonusRoll }
