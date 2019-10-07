@@ -62,6 +62,16 @@ export default class Board extends Component {
       currentFrame = this.state.currentFrame + 1;
     }
 
+    //strike handler
+
+    if (isRollStrike(this.state.currentRoll, rollValue) && this.state.currentRoll === "rollOne") {
+      currentFrame = getNextFrame(currentFrame);
+    }
+    let decrementedStrikeCounter = this.state.strikeCounter + decrementStrikeCounter(this.state.strikeCounter);
+
+    let strikeCounter = handleStrike(this.state.currentRoll, rollValue, frameTotal);
+    strikeCounter = decrementedStrikeCounter + strikeCounter;
+
     //update frameTotal
     frames[this.state.currentFrame][2] = frameTotal;
 
@@ -75,7 +85,8 @@ export default class Board extends Component {
       frames,
       currentRoll: nextRoll,
       gameTotal,
-      currentFrame
+      currentFrame,
+      strikeCounter
     })
 
     // let nextFrame = getNextFrame(this.state.currentFrame);
