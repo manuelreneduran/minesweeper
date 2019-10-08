@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest --watch",
     "react-dev": "webpack -d --watch",
-    "server-dev": "nodemon -d server/index.js"
+    "server-dev": "nodemon -d server/index.js",
+    "collect-coverage": "jest --collectCoverage"
   },
   "author": "",
   "license": "ISC",

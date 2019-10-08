@@ -31,4 +31,26 @@ function setHiddenMines(board) {
   return board;
 }
 
-module.exports = { createBoard, setHiddenMines }
+function checkAdjacentCells(board, y, x) {
+  return 0;
+}
+
+function setBoard(board, y, x, mines) {
+
+  board[y][x] = mines;
+  return board;
+}
+
+function handleCellOpen(board, y, x, value, mines) {
+  if (value === 0) {
+    var minesAroundCell = mines || checkAdjacentCells(board, y, x);
+    if (minesAroundCell > 0) {
+      board = setBoard(board, y, x, minesAroundCell)
+      return board;
+    } else {
+
+    }
+  }
+}
+
+module.exports = { createBoard, setHiddenMines, handleCellOpen }

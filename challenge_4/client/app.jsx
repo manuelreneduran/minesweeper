@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { createBoard, setHiddenMines } from './helpers/index.js';
+import { createBoard, setHiddenMines, handleCellOpen } from './helpers/index.js';
 import Board from './components/Board.jsx';
 import './style.css';
 
@@ -24,9 +24,12 @@ export default class App extends Component {
     e.persist()
     var y = parseInt(e.target.attributes[3].value);
     var x = parseInt(e.target.attributes[2].value);
-    console.log(e.target.attributes);
+    var value = parseInt(e.target.innerText);
+
     this.setState({
       clickedCoord: [y, x]
+    }, () => {
+      var board = handleCellOpen(this.state.board, this.state.clickedCoord[0], this.state.clickedCoord[1], value);
     })
   }
 

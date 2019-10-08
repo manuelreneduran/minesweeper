@@ -1,5 +1,5 @@
 import React from 'react';
-import { createBoard, setHiddenMines } from '../client/helpers/index.js';
+import { createBoard, setHiddenMines, handleCellOpen } from '../client/helpers/index.js';
 import renderer from 'react-test-renderer';
 
 describe('creating a board', () => {
@@ -34,5 +34,13 @@ describe('creating a board', () => {
       }
     }
     jestExpect(mineCounter).toBe(10);
+  })
+});
+
+describe('handling opening cells', () => {
+  it('should set a new cell value when there are adjacent mines', () => {
+    var board = [[0, 0, 0], [0, 0, 0]];
+    board = handleCellOpen(board, 0, 0, 0, 5);
+    expect(board[0][0]).to.equal(5);
   })
 })
