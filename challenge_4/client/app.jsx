@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { createBoard, setHiddenMines } from './library/helpers.js';
+import { createBoard, setHiddenMines } from './helpers/index.js';
+import Board from './components/Board.jsx';
 
 export default class App extends Component {
   constructor(props) {
@@ -19,7 +20,9 @@ export default class App extends Component {
 
   render() {
     return (
-      <div>test</div>
+      <div id="board">
+        {this.state.board ? <Board board={this.state.board}/> : null}
+      </div>
     )
   }
 }
