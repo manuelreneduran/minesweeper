@@ -1,8 +1,8 @@
 import React from 'react';
 
-function Cell({ cell }) {
+function Cell({ cell, cellClickHandler, row, column }) {
   return (
-    <div className="cell">
+    <div onClick={e => cellClickHandler(e)} className="cell" x={column} y={row}>
       {cell}
     </div>
   )

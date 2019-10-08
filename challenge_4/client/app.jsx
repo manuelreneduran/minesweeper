@@ -9,6 +9,7 @@ export default class App extends Component {
     this.state = {
       board: null
     };
+    this.cellClickHandler = this.cellClickHandler.bind(this);
   }
 
   componentDidMount() {
@@ -18,10 +19,17 @@ export default class App extends Component {
     })
   }
 
+  cellClickHandler(e) {
+    e.persist()
+    var y = e.target.attributes[2].value;
+    var x = e.target.attributes[1].value;
+    console.log(y, x);
+  }
+
   render() {
     return (
       <div id="board">
-        {this.state.board ? <Board board={this.state.board}/> : null}
+        {this.state.board ? <Board cellClickHandler={this.cellClickHandler} board={this.state.board}/> : null}
       </div>
     )
   }
