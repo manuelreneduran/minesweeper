@@ -2,7 +2,7 @@ import React from 'react';
 
 function Cell({ cell, cellClickHandler, row, column }) {
   return (
-    <div onClick={e => cellClickHandler(e)} className="cell" x={column} y={row}>
+    <div id={`cell-${row}-${column}`}onClick={e => cellClickHandler(e)} className="cell" x={column} y={row}>
       {cell}
     </div>
   )

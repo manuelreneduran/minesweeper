@@ -7,7 +7,8 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      board: null
+      board: null,
+      clickedCoord: null
     };
     this.cellClickHandler = this.cellClickHandler.bind(this);
   }
@@ -21,9 +22,12 @@ export default class App extends Component {
 
   cellClickHandler(e) {
     e.persist()
-    var y = e.target.attributes[2].value;
-    var x = e.target.attributes[1].value;
-    console.log(y, x);
+    var y = parseInt(e.target.attributes[3].value);
+    var x = parseInt(e.target.attributes[2].value);
+    console.log(e.target.attributes);
+    this.setState({
+      clickedCoord: [y, x]
+    })
   }
 
   render() {
