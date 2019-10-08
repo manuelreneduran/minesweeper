@@ -8,8 +8,8 @@ describe('creating a board', () => {
     var shortBoard = Object.assign([], board);
     shortBoard.splice(0);
 
-    expect(board.length).toBe(10);
-    expect(shortBoard.length).not.toEqual(10);
+    jestExpect(board.length).toBe(10);
+    jestExpect(shortBoard.length).not.toEqual(10);
   })
 
   it('should have 10 columns', () => {
@@ -21,11 +21,10 @@ describe('creating a board', () => {
         return;
       }
     }
-    expect(rowsEqualTen).toBe(true);
+    jestExpect(rowsEqualTen).toBe(true);
   });
 
   it('should have 10 mines', () => {
-    board = setHiddenMines(board);
     var mineCounter = 0;
     for (var row of board) {
       for (var cell of row) {
@@ -34,6 +33,6 @@ describe('creating a board', () => {
         }
       }
     }
-    expect(mineCounter).toBe(10);
+    jestExpect(mineCounter).toBe(10);
   })
 })

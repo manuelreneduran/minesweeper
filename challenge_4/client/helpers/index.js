@@ -4,6 +4,7 @@ function createBoard() {
     var row = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     board.push(row);
   }
+  board = setHiddenMines(board);
   return board;
 }
 

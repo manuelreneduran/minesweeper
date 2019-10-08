@@ -12,7 +12,6 @@ export default class App extends Component {
 
   componentDidMount() {
     var board = createBoard();
-    board = setHiddenMines(board);
     this.setState({
       board
     })
