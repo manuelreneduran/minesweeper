@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { createBoard, setHiddenMines } from './helpers/index.js';
 import Board from './components/Board.jsx';
+import './style.css';
 
 export default class App extends Component {
   constructor(props) {

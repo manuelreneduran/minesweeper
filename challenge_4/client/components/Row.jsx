@@ -1,8 +1,14 @@
 import React from 'react';
+import Cell from './Cell.jsx';
 
-function Row({ row }) {
+function Row({ row, id }) {
+  var cells = row.map((ele, ind) => {
+    return <Cell cell={ele} key={ind + 10}/>
+  })
   return (
-    <p>{row}</p>
+    <div id={id} className="rows">
+      {cells}
+    </div>
   )
 }
 
