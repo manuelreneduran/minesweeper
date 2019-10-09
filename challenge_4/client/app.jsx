@@ -22,7 +22,6 @@ export default class App extends Component {
 
   cellClickHandler(e) {
     e.persist()
-    console.log(e);
     var y = parseInt(e.target.attributes[3].value);
     var x = parseInt(e.target.attributes[2].value);
     var value = parseInt(e.target.attributes[4].value);
