@@ -32,7 +32,7 @@ function setHiddenMines(board) {
 }
 
 function checkAdjacentCells(board, y, x) {
-  return 0;
+  return 5;
 }
 
 function setBoard(board, y, x, mines) {
