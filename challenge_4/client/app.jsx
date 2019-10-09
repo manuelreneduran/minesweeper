@@ -30,7 +30,7 @@ export default class App extends Component {
     this.setState({
       clickedCoord: [y, x]
     }, () => {
-      var board = handleCellOpen(this.state.board, this.state.clickedCoord[0], this.state.clickedCoord[1], value);
+      var board = handleCellOpen(this.state.board, y, x, value);
       this.setState({board});
     })
   }

@@ -48,7 +48,7 @@ describe('handling opening cells', () => {
     var board = [
     [0, -3, 0, -3, 0],
     [0, -3, 0, -3, 0],
-    [0, -3, 0, -3, 0],
+    [0, -3, -3, -3, 0],
     [0, -3, 0, -3, 0],
     [0, -3, 0, -3, 0]];
 
@@ -76,7 +76,7 @@ describe('handling opening cells', () => {
     counter = checkForMines(board, 2, 0);
     expect(counter).to.equal(3);
 
-    counter = checkForMines(board, 2, 2);
-    expect(counter).to.equal(6);
+    counter = checkForMines(board, 3, 2);
+    expect(counter).to.equal(7);
   })
 })
