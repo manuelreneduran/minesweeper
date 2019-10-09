@@ -1,5 +1,5 @@
 import React from 'react';
-import { createBoard, setHiddenMines, handleCellOpen, checkForMines } from '../client/helpers/index.js';
+import { createBoard, setHiddenMines, handleCellOpen, checkAdjacentCells, setAdjacentCells } from '../client/helpers/index.js';
 import renderer from 'react-test-renderer';
 
 describe('creating a board', () => {
@@ -52,31 +52,45 @@ describe('handling opening cells', () => {
     [0, -3, 0, -3, 0],
     [0, -3, 0, -3, 0]];
 
-    var counter = checkForMines(board, 0, 0);
+    var counter = checkAdjacentCells(board, 0, 0, -3);
     expect(counter).to.equal(2);
 
-    counter = checkForMines(board, 0, 2);
+    counter = checkAdjacentCells(board, 0, 2, -3);
     expect(counter).to.equal(4);
 
-    counter = checkForMines(board, 0, 4);
+    counter = checkAdjacentCells(board, 0, 4, -3);
     expect(counter).to.equal(2);
 
-    counter = checkForMines(board, 2, 4);
+    counter = checkAdjacentCells(board, 2, 4, -3);
     expect(counter).to.equal(3);
 
-    counter = checkForMines(board, 4, 4);
+    counter = checkAdjacentCells(board, 4, 4, -3);
     expect(counter).to.equal(2);
 
-    counter = checkForMines(board, 4, 2);
+    counter = checkAdjacentCells(board, 4, 2, -3);
     expect(counter).to.equal(4);
 
-    counter = checkForMines(board, 4, 0);
+    counter = checkAdjacentCells(board, 4, 0, -3);
     expect(counter).to.equal(2);
 
-    counter = checkForMines(board, 2, 0);
+    counter = checkAdjacentCells(board, 2, 0, -3);
     expect(counter).to.equal(3);
 
-    counter = checkForMines(board, 3, 2);
+    counter = checkAdjacentCells(board, 3, 2, -3);
     expect(counter).to.equal(7);
+  })
+
+  it('should open all adjacent cells if no mines adjacent', () => {
+    var board = [
+      [-3, 0, 0, 0, -3],
+      [0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0],
+      [-3, 0, 0, 0, -3]
+    ];
+
+    board = setAdjacentCells(board, 2, 2, 0);
+    var openAdjacentCells = checkAdjacentCells(board, 2, 2, -2);
+    expect(openAdjacentCells).to.equal(8);
   })
 })
