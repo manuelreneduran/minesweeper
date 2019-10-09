@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { createBoard, setHiddenMines, handleCellOpen } from './helpers/index.js';
+import { createBoard, setHiddenMines, handleCellOpen, recursivelyOpen } from './helpers/index.js';
 import Board from './components/Board.jsx';
 import './style.css';
 
@@ -32,6 +32,7 @@ export default class App extends Component {
       clickedCoord: [y, x]
     }, () => {
       var board = handleCellOpen(this.state.board, y, x, value, 0);
+      board = recursivelyOpen(board);
       this.setState({board});
     })
   }

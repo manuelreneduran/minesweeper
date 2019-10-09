@@ -127,6 +127,7 @@ function recursivelyOpen(board) {
       }
 
       if (finishCounter === 0) {
+        alteredBoard = board;
         return;
       }
 
