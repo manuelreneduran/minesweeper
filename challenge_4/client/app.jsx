@@ -22,15 +22,16 @@ export default class App extends Component {
 
   cellClickHandler(e) {
     e.persist()
-    var y = parseInt(e.target.attributes[3].value);
-    var x = parseInt(e.target.attributes[2].value);
-    var value = parseInt(e.target.attributes[4].value);
+    var target = e.target;
+    var y = parseInt(target.attributes[3].value);
+    var x = parseInt(target.attributes[2].value);
+    var value = parseInt(target.attributes[4].value);
 
     //for testing purposes
     this.setState({
       clickedCoord: [y, x]
     }, () => {
-      var board = handleCellOpen(this.state.board, y, x, value);
+      var board = handleCellOpen(this.state.board, y, x, value, 0);
       this.setState({board});
     })
   }

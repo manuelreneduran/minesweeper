@@ -94,17 +94,59 @@ function setBoard(board, y, x, mines) {
   return board;
 }
 
-function handleCellOpen(board, y, x, value, mines) {
-  if (value === 0) {
-    var minesAroundCell = mines || checkAdjacentCells(board, y, x, -3);
+function handleCellOpen(board, y, x, value, target, recursing = false) {
+  if (value === 0 || recursing) {
+    var minesAroundCell = checkAdjacentCells(board, y, x, -3);
     if (minesAroundCell > 0) {
-    board = setBoard(board, y, x, minesAroundCell)
+      board = setBoard(board, y, x, minesAroundCell)
       return board;
     } else {
-      board = setAdjacentCells(board, y, x);
+      board = setAdjacentCells(board, y, x, target);
       return board;
     }
+  } else if (value === -3) {
+    window.alert("Game over -- Try again!");
+    board = createBoard();
+    return board;
+  } else if (value === -2 || -1 && !recursing) {
+    return board;
   }
 }
 
-module.exports = { createBoard, setHiddenMines, handleCellOpen, checkAdjacentCells, setAdjacentCells }
+function recursivelyOpen(board) {
+  var alteredBoard;
+
+  function iterateBoard(board) {
+    var finishCounter = 0;
+    for (var row of board) {
+      for (var cell of row) {
+        if (cell === -2) {
+          finishCounter++;
+        }
+      }
+    }
+
+    if (finishCounter === 0) {
+      return;
+    }
+
+    for (var i = 0; i < board.length; i++) {
+      for (var q = 0; q < board[i].length; q++) {
+        var cell = board[i][q];
+        if (cell === -2) {
+          board = handleCellOpen(board, i, q, cell, true)
+          if (!(board[i][q] > 0)) {
+            board[i][q] = -1;
+          }
+        }
+      }
+    }
+    alteredBoard = board;
+    iterateBoard(alteredBoard);
+  }
+
+  iterateBoard(board);
+  return alteredBoard;
+}
+
+module.exports = { createBoard, setHiddenMines, handleCellOpen, checkAdjacentCells, setAdjacentCells, recursivelyOpen }

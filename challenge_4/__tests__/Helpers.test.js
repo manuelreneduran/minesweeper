@@ -1,5 +1,5 @@
 import React from 'react';
-import { createBoard, setHiddenMines, handleCellOpen, checkAdjacentCells, setAdjacentCells } from '../client/helpers/index.js';
+import { createBoard, setHiddenMines, handleCellOpen, checkAdjacentCells, setAdjacentCells, recursivelyOpen } from '../client/helpers/index.js';
 import renderer from 'react-test-renderer';
 
 describe('creating a board', () => {
@@ -39,9 +39,9 @@ describe('creating a board', () => {
 
 describe('handling opening cells', () => {
   it('should set a new cell value when there are adjacent mines', () => {
-    var board = [[0, 0, 0], [0, 0, 0]];
-    board = handleCellOpen(board, 0, 0, 0, 5);
-    expect(board[0][0]).to.equal(5);
+    var board = [[0, -3, 0], [0, 0, 0]];
+    board = handleCellOpen(board, 0, 0, 0, -2);
+    expect(board[0][0]).to.equal(1);
   })
 
   it('should count the number of mines adjacent to cell', () => {
@@ -80,7 +80,7 @@ describe('handling opening cells', () => {
     expect(counter).to.equal(7);
   })
 
-  it('should open all adjacent cells if no mines adjacent', () => {
+  it('should open all adjacent cells if no mines adjacent and cells are unopened', () => {
     var board = [
       [-3, 0, 0, 0, -3],
       [0, 0, 0, 0, 0],
@@ -92,5 +92,35 @@ describe('handling opening cells', () => {
     board = setAdjacentCells(board, 2, 2, 0);
     var openAdjacentCells = checkAdjacentCells(board, 2, 2, -2);
     expect(openAdjacentCells).to.equal(8);
+  })
+
+  it('should recursively open cells', () => {
+    var board = [
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, -3, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, -2, -2, -2, 0, 0, 0],
+      [0, 0, 0, 0, 0, -2, 0, -2, -3, 0],
+      [0, 0, 0, 0, 0, -2, -2, -2, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, -3, 0, 0, 0, 0, 0, 0, 0]
+    ];
+
+  var expected = [[
+    [1, 1, 1, -1, -1, -1, -1, -1, -1, -1],
+    [1, -3, 1, -1, -1, -1, -1, -1, -1, -1],
+    [1, 1, 1, -1, -1, -1, -1, -1, -1, -1],
+    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+    [-1, -1, -1, -1, -1, -1, -1, 1, 1, 1],
+    [-1, -1, -1, -1, -1, -1, -1, 1, -3, 1],
+    [-1, -1, -1, -1, -1, -1, -1, 1, 1, 1],
+    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+    [-1, 1, 1, 1, -1, -1, -1, -1, -1, -1],
+    [-1, 1, -3, 1, -1, -1, -1, -1, -1, -1]
+  ]]
+
+
   })
 })
