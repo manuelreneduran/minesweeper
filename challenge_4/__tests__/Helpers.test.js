@@ -1,5 +1,5 @@
 import React from 'react';
-import { createBoard, setHiddenMines, handleCellOpen } from '../client/helpers/index.js';
+import { createBoard, setHiddenMines, handleCellOpen, checkForMines } from '../client/helpers/index.js';
 import renderer from 'react-test-renderer';
 
 describe('creating a board', () => {
@@ -42,5 +42,41 @@ describe('handling opening cells', () => {
     var board = [[0, 0, 0], [0, 0, 0]];
     board = handleCellOpen(board, 0, 0, 0, 5);
     expect(board[0][0]).to.equal(5);
+  })
+
+  it('should count the number of mines adjacent to cell', () => {
+    var board = [
+    [0, -3, 0, -3, 0],
+    [0, -3, 0, -3, 0],
+    [0, -3, 0, -3, 0],
+    [0, -3, 0, -3, 0],
+    [0, -3, 0, -3, 0]];
+
+    var counter = checkForMines(board, 0, 0);
+    expect(counter).to.equal(2);
+
+    counter = checkForMines(board, 0, 2);
+    expect(counter).to.equal(4);
+
+    counter = checkForMines(board, 0, 4);
+    expect(counter).to.equal(2);
+
+    counter = checkForMines(board, 2, 4);
+    expect(counter).to.equal(3);
+
+    counter = checkForMines(board, 4, 4);
+    expect(counter).to.equal(2);
+
+    counter = checkForMines(board, 4, 2);
+    expect(counter).to.equal(4);
+
+    counter = checkForMines(board, 4, 0);
+    expect(counter).to.equal(2);
+
+    counter = checkForMines(board, 2, 0);
+    expect(counter).to.equal(3);
+
+    counter = checkForMines(board, 2, 2);
+    expect(counter).to.equal(6);
   })
 })

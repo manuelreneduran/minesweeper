@@ -31,26 +31,75 @@ function setHiddenMines(board) {
   return board;
 }
 
-function checkAdjacentCells(board, y, x) {
-  return 5;
+function setAdjacentCells(board, y, x) {
+
+  if (board[y - 1][x + 1]) {
+    board[y - 1][x + 1] = -2;
+  }
+  if (board[y][x + 1]) {
+    board[y][x + 1] = -2;
+  }
+  if (board[y + 1][x + 1]) {
+    board[y + 1][x + 1] = -2;
+  }
+  if (board[y + 1][x]) {
+    board[y + 1][x] = -2;
+  }
+  if (board[y + 1][x - 1]) {
+    board[y + 1][x - 1] = -2;
+  }
+  if (board[y][x - 1]) {
+    board[y][x - 1] = -2;
+  }
+  if (board[y - 1][x - 1]) {
+    board[y - 1][x - 1] = -2;
+  }
+  return board;
+}
+
+function checkForMines(board, y, x) {
+  var counter = 0;
+  console.log("here are coords " + y + " " + x)
+  if (board[y - 1] && board[x + 1] && board[y - 1][x + 1] === -3) {
+    counter++;
+    }
+  if (board[y] && board[x + 1] && board[y][x + 1] === -3) {
+    counter++;
+  }
+  if (board[y + 1] && board[x + 1] && board[y + 1][x + 1] === -3) {
+    counter++;
+  }
+  if (board[y + 1] && board[x] && board[y + 1][x] === -3) {
+    counter++;
+  }
+  if (board[y + 1] && board[x - 1] && board[y + 1][x - 1] === -3) {
+    counter++;
+  }
+  if (board[y] && board[x - 1] && board[y][x - 1] === -3) {
+    counter++;
+  }
+  if (board[y - 1] && board[x - 1] && board[y - 1][x - 1] === -3) {
+    counter++;
+  }
+  return counter;
 }
 
 function setBoard(board, y, x, mines) {
-
   board[y][x] = mines;
   return board;
 }
 
 function handleCellOpen(board, y, x, value, mines) {
   if (value === 0) {
-    var minesAroundCell = mines || checkAdjacentCells(board, y, x);
+    var minesAroundCell = mines || checkForMines(board, y, x);
     if (minesAroundCell > 0) {
-      board = setBoard(board, y, x, minesAroundCell)
+    board = setBoard(board, y, x, minesAroundCell)
       return board;
     } else {
-
+      board = setAdjacentCells(board, y, x);
+      return board;
     }
   }
 }
 
-module.exports = { createBoard, setHiddenMines, handleCellOpen }
+module.exports = { createBoard, setHiddenMines, handleCellOpen, checkForMines }

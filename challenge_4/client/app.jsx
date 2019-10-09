@@ -26,6 +26,7 @@ export default class App extends Component {
     var x = parseInt(e.target.attributes[2].value);
     var value = parseInt(e.target.attributes[4].value);
 
+    //for testing purposes
     this.setState({
       clickedCoord: [y, x]
     }, () => {
