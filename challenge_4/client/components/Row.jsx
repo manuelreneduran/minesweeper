@@ -1,5 +1,6 @@
 import React from 'react';
 import Cell from './Cell.jsx';
+import { Component } from 'react';
 
 function Row({ row, id, cellClickHandler }) {
   var cells = row.map((ele, ind) => {
@@ -11,5 +12,7 @@ function Row({ row, id, cellClickHandler }) {
     </div>
   )
 }
+
+
 
 export default Row;

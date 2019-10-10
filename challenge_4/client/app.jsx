@@ -58,9 +58,14 @@ class ConnectedApp extends Component {
 
   render() {
     return (
+      <>
+      <div id="title-container">
+        <h1 id="title">MineSweeper</h1>
+      </div>
       <div id="board">
         {this.props.board ? <Board cellClickHandler={this.cellClickHandler} board={this.props.board}/> : null}
       </div>
+      </>
     )
   }
 }

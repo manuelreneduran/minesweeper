@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 
 function Cell({ cell, cellClickHandler, row, column }) {
   return (
@@ -10,5 +10,7 @@ function Cell({ cell, cellClickHandler, row, column }) {
     </div>
   )
 }
+
+
 
 export default Cell;
