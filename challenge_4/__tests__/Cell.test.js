@@ -15,13 +15,14 @@ describe('<Cell />', () => {
   // it('should not render a value if a mine is clicked', () => {
   //   var board = [[-3, 0, 0], [0, 0, 0]];
   //   const wrapper = shallow(<Cell cell={board[0][0]}/>);
-  //   expect(wrapper.find('p')).to.have.lengthOf(0);
-  //   expect(wrapper.find('p')).to.not.have.lengthOf(1);
+  //   expect(wrapper.find('-3')).to.have.lengthOf(0);
+  //   expect(wrapper.find('div')).to.not.have.lengthOf(1);
   // })
 
-  // it('should render a value if other than a mine is clicked', () => {
-  //   var board = [[-3, 1, 0], [0, 0, 0]];
-  //   const wrapper = shallow(<Cell cell={board[0][1]}/>);
-  //   expect(wrapper.find('p')).to.have.lengthOf(1);
-  // })
+  it('should render a value if a tile not containing a mine is clicked', () => {
+    var board = [[-3, 1, 0], [0, 0, 0]];
+    const wrapper = shallow(<Cell cell={board[0][1]}/>);
+    expect(wrapper.find('div').find({ style: null })).to.have.lengthOf(1);
+    expect(wrapper.find('div').find({ style: null })).to.not.have.lengthOf(0);
+  })
 })

@@ -4,6 +4,8 @@ import Board from './components/Board.jsx';
 import './style.css';
 import { connect } from "react-redux";
 import { setBoard, setCoords } from './redux/actions/index.js';
+import Zoom from 'react-reveal/Zoom';
+
 
 const mapStateToProps = state => {
   return {
@@ -59,12 +61,15 @@ class ConnectedApp extends Component {
   render() {
     return (
       <>
-      <div id="title-container">
-        <h1 id="title">MineSweeper</h1>
-      </div>
-      <div id="board">
-        {this.props.board ? <Board cellClickHandler={this.cellClickHandler} board={this.props.board}/> : null}
-      </div>
+      <Zoom>
+        <div id="title-container">
+          <h1 id="title">MineSweeper</h1>
+        </div>
+        <div id="board">
+          {this.props.board ? <Board cellClickHandler={this.cellClickHandler} board={this.props.board}/> : null}
+        </div>
+      </Zoom>
+
       </>
     )
   }
