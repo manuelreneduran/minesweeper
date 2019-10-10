@@ -48,23 +48,17 @@ class ConnectedApp extends Component {
     //redux
     this.props.setCoords([y, x]);
     //for testing
-    this.setState({
-      clickedCoord: [y, x]
-    }, () => {
+
       var board = handleCellOpen(this.state.board, y, x, value, 0);
       board = recursivelyOpen(board);
       //redux
       this.props.setBoard(board);
-      this.setState({
-        board
-      });
-    })
   }
 
   render() {
     return (
       <div id="board">
-        {this.state.board ? <Board cellClickHandler={this.cellClickHandler} board={this.state.board}/> : null}
+        {this.props.board ? <Board cellClickHandler={this.cellClickHandler} board={this.props.board}/> : null}
       </div>
     )
   }
