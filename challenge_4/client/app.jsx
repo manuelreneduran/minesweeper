@@ -33,7 +33,9 @@ export default class App extends Component {
     }, () => {
       var board = handleCellOpen(this.state.board, y, x, value, 0);
       board = recursivelyOpen(board);
-      this.setState({board});
+      this.setState({
+        board
+      });
     })
   }
 
