@@ -50,11 +50,10 @@ class ConnectedApp extends Component {
     //redux
     this.props.setCoords([y, x]);
     //for testing
-
-      var board = handleCellOpen(this.props.board, y, x, value, 0);
-      board = recursivelyOpen(board);
-      //redux
-      this.props.setBoard(board);
+    var board = handleCellOpen(this.props.board, y, x, value, 0);
+    board = recursivelyOpen(board);
+    //redux
+    this.props.setBoard(board);
 
   }
 
@@ -66,7 +65,7 @@ class ConnectedApp extends Component {
           <h1 id="title">MineSweeper</h1>
         </div>
         <div id="board">
-          {this.props.board ? <Board cellClickHandler={this.cellClickHandler} board={this.props.board}/> : null}
+          {this.props.board ? <Board cellClickHandler={this.cellClickHandler} /> : null}
         </div>
       </Zoom>
 
