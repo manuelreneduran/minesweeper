@@ -2,8 +2,24 @@ import React, { Component } from 'react';
 import { createBoard, setHiddenMines, handleCellOpen, recursivelyOpen } from './helpers/index.js';
 import Board from './components/Board.jsx';
 import './style.css';
+import { connect } from "react-redux";
+import { setBoard, setCoords } from './redux/actions/index.js';
 
-export default class App extends Component {
+const mapStateToProps = state => {
+  return {
+    board: state.board,
+    clickedCoord: state.clickedCoord
+  };
+};
+
+function mapDispatchToProps(dispatch) {
+  return {
+    setBoard: board => dispatch(setBoard(board)),
+    setCoords: coords => dispatch(setCoords(coords))
+  };
+}
+
+class ConnectedApp extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -15,6 +31,8 @@ export default class App extends Component {
 
   componentDidMount() {
     var board = createBoard();
+    //redux
+    this.props.setBoard(board);
     this.setState({
       board
     })
@@ -27,12 +45,16 @@ export default class App extends Component {
     var x = parseInt(target.attributes[2].value);
     var value = parseInt(target.attributes[4].value);
 
-    //for testing purposes
+    //redux
+    this.props.setCoords([y, x]);
+    //for testing
     this.setState({
       clickedCoord: [y, x]
     }, () => {
       var board = handleCellOpen(this.state.board, y, x, value, 0);
       board = recursivelyOpen(board);
+      //redux
+      this.props.setBoard(board);
       this.setState({
         board
       });
@@ -48,3 +70,8 @@ export default class App extends Component {
   }
 }
 
+
+
+const App = connect(mapStateToProps, mapDispatchToProps)(ConnectedApp);
+
+export default App;
