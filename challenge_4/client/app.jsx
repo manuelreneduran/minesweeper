@@ -54,7 +54,7 @@ class ConnectedApp extends Component {
     board = recursivelyOpen(board);
     //redux
     this.props.setBoard(board);
-
+    console.log(this.props.board);
   }
 
   render() {
@@ -65,7 +65,7 @@ class ConnectedApp extends Component {
           <h1 id="title">MineSweeper</h1>
         </div>
         <div id="board">
-          {this.props.board ? <Board cellClickHandler={this.cellClickHandler} /> : null}
+          {this.props.board ? <Board cellClickHandler={this.cellClickHandler} board={this.props.board}/> : null}
         </div>
       </Zoom>
 

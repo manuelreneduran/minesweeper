@@ -6,6 +6,7 @@ const initialState = {
 };
 
 export default function rootReducer(state = initialState, action) {
+
   if (action.type === SET_BOARD) {
     return {...state,
       board: action.payload };
