@@ -47,7 +47,6 @@ class ConnectedApp extends Component {
     var board = handleCellOpen(this.props.board, y, x, value, 0);
     board = recursivelyOpen(board);
     this.props.setBoard(board);
-    console.log(this.props.board);
   }
 
   render() {
