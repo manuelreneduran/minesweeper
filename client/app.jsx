@@ -33,11 +33,7 @@ class ConnectedApp extends Component {
 
   componentDidMount() {
     var board = createBoard();
-    //redux
     this.props.setBoard(board);
-    // this.setState({
-    //   board
-    // })
   }
 
   cellClickHandler(e) {
@@ -47,12 +43,9 @@ class ConnectedApp extends Component {
     var x = parseInt(target.attributes[2].value);
     var value = parseInt(target.attributes[4].value);
 
-    //redux
     this.props.setCoords([y, x]);
-    //for testing
     var board = handleCellOpen(this.props.board, y, x, value, 0);
     board = recursivelyOpen(board);
-    //redux
     this.props.setBoard(board);
     console.log(this.props.board);
   }

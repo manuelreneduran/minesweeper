@@ -3,12 +3,6 @@ import Row from './Row.jsx';
 import { connect } from "react-redux";
 
 
-// const mapStateToProps = state => {
-//   return {
-//     board: state.board,
-//   };
-// };
-
 function Board({ board, cellClickHandler }) {
 
   var rows = board.map((ele, ind) => {
@@ -22,6 +16,5 @@ function Board({ board, cellClickHandler }) {
   )
 }
 
-// const Board = connect(mapStateToProps)(ConnectedBoard);
 
 export default Board;
