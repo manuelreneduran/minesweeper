@@ -51,6 +51,12 @@ class App extends Component {
     })
   }
 
+  handleSizeSubmit(e) {
+    e.preventDefault();
+    var size = this.state.size;
+    this.createNewBoard(size);
+  }
+
   render() {
     return (
       <>
@@ -61,11 +67,11 @@ class App extends Component {
           {this.state.board ? <Board cellClickHandler={this.cellClickHandler} board={this.state.board}/> : null}
         </div>
         <div id="size-input-container">
-          <form id="size-form">
+          <form onSubmit={e => this.handleSizeSubmit(e)} id="size-form">
             <label id="size-label">Adjust board size (10-100)</label>
             <input onChange={e => this.handleChange(e)}type="number" id="size-input" name="size"
             min="10" max="100"></input>
-            <button id="size-button" type="submit">Adjust</button>
+            <button id="size-button">Adjust</button>
           </form>
         </div>
       </>
