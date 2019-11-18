@@ -1,6 +1,5 @@
 import React from 'react';
 import Row from './Row.jsx';
-import { connect } from "react-redux";
 
 
 function Board({ board, cellClickHandler }) {
