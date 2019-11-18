@@ -35,7 +35,35 @@ body {
   width: 100%;
   display: flex;
   flex-direction: row;
+}
 
+label {
+  color: white;
+}
+
+#size-input-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  border: 1px red solid;
+}
+
+#size-form {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+#size-label {
+  padding-right: 10px;
+}
+
+#size-input {
+  margin-right: 10px;
 }
 
 .rows-container {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { setBoard, createBoard, setHiddenMines, handleCellOpen, recursivelyOpen } from './helpers/index.js';
+import { createBoard, setHiddenMines, handleCellOpen, recursivelyOpen } from './helpers/index.js';
 import Board from './components/Board.jsx';
 import './style.css';
 
@@ -9,13 +9,18 @@ class App extends Component {
     super(props);
     this.state = {
       board: null,
-      clickedCoord: null
+      clickedCoord: null,
+      size: null
     };
     this.cellClickHandler = this.cellClickHandler.bind(this);
   }
 
   componentDidMount() {
-    var board = createBoard();
+    this.createNewBoard(10);
+  }
+
+  createNewBoard(n) {
+    var board = createBoard(n);
     this.setState({
       board
     })
@@ -38,6 +43,14 @@ class App extends Component {
     })
   }
 
+  handleChange(e) {
+    var key = e.target.name;
+    var value = e.target.value;
+    this.setState({
+      [key]: value
+    })
+  }
+
   render() {
     return (
       <>
@@ -46,6 +59,14 @@ class App extends Component {
         </div>
         <div id="board">
           {this.state.board ? <Board cellClickHandler={this.cellClickHandler} board={this.state.board}/> : null}
+        </div>
+        <div id="size-input-container">
+          <form id="size-form">
+            <label id="size-label">Adjust board size (10-100)</label>
+            <input onChange={e => this.handleChange(e)}type="number" id="size-input" name="size"
+            min="10" max="100"></input>
+            <button id="size-button" type="submit">Adjust</button>
+          </form>
         </div>
       </>
     )

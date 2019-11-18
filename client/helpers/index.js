@@ -1,32 +1,35 @@
-function createBoard() {
+function createBoard(n) {
   var board = [];
-  while (board.length < 10) {
-    var row = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  while (board.length < n) {
+    var row = [];
+    for (var i = 0; i < n; i++) {
+      row.push(0);
+    }
     board.push(row);
   }
-  board = setHiddenMines(board);
+  board = setHiddenMines(board, n);
   return board;
 }
 
-function createMine() {
-  var xRandomNum = Math.floor(Math.random() * 10)
-  var yRandomNum = Math.floor(Math.random() * 10);
+function createMine(n) {
+  var xRandomNum = Math.floor(Math.random() * n)
+  var yRandomNum = Math.floor(Math.random() * n);
   return [xRandomNum, yRandomNum];
 }
 
-function setMines(board) {
-  var mine = createMine();
+function setMines(board, n) {
+  var mine = createMine(n);
   if (board[mine[0]][mine[1]] === -3) {
-    setMines(board);
+    setMines(board, n);
   } else {
     board[mine[0]][mine[1]] = -3;
   }
   return board;
 }
 
-function setHiddenMines(board) {
-  for (var i = 0; i < 10; i++) {
-    board = setMines(board);
+function setHiddenMines(board, n) {
+  for (var i = 0; i < n; i++) {
+    board = setMines(board, n);
   }
   return board;
 }
