@@ -97,7 +97,7 @@ function setBoard(board, y, x, mines) {
   return board;
 }
 
-function handleCellOpen(board, y, x, value, target, recursing = false) {
+function handleCellOpen(board, y, x, value, target, size, recursing = false) {
   if (value === 0 || recursing) {
     var minesAroundCell = checkAdjacentCells(board, y, x, -3);
     if (minesAroundCell > 0) {
@@ -108,8 +108,9 @@ function handleCellOpen(board, y, x, value, target, recursing = false) {
       return board;
     }
   } else if (value === -3) {
+    debugger;
     window.alert("Game over -- Try again!");
-    board = createBoard();
+    board = createBoard(size);
     return board;
   } else if (value === -2 || -1 && !recursing) {
     return board;
