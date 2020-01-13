@@ -8,7 +8,6 @@ In the terminal
 
 ```
 npm react-dev
-npm start
 ```
 
 Navigate to localhost:3000
