@@ -6,7 +6,7 @@ import './style.css';
 function App() {
   var [board, setBoard] = useState(createBoard(10));
   var [clickedCoord, setClickedCoord] = useState(undefined);
-  var [size, setSize] = useState(undefined);
+  var [size, setSize] = useState(10);
 
   function createNewBoard(n) {
     var board = createBoard(n);
@@ -18,10 +18,14 @@ function App() {
     var target = e.target;
     var y = parseInt(target.attributes[3].value);
     var x = parseInt(target.attributes[2].value);
+
     var value = parseInt(target.attributes[4].value);
+
     setClickedCoord([x, y]);
-    board = handleCellOpen(board, y, x, value, 0);
-    board = recursivelyOpen(board);
+
+    board = handleCellOpen(board, y, x, value, 0, size);
+    board = recursivelyOpen(board, size);
+
     setBoard(board);
   }
 
