@@ -117,7 +117,7 @@ function handleCellOpen(board, y, x, value, target, size, recursing = false) {
   }
 }
 
-function recursivelyOpen(board) {
+function recursivelyOpen(board, size) {
   var alteredBoard;
 
     function iterateBoard(board) {
@@ -139,7 +139,7 @@ function recursivelyOpen(board) {
         for (var q = 0; q < board[i].length; q++) {
           var cell = board[i][q];
           if (cell === -2) {
-            board = handleCellOpen(board, i, q, cell, 0, true)
+            board = handleCellOpen(board, i, q, cell, 0, size, true)
             if ((board[i][q] === -2)) {
               board[i][q] = -1;
             }
