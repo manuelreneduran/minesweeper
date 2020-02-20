@@ -22,15 +22,10 @@ function App() {
     var value = parseInt(target.attributes[4].value);
 
     setClickedCoord([x, y]);
-<<<<<<< HEAD
-    board = handleCellOpen(board, y, x, value, 0, size);
-    board = recursivelyOpen(board);
-=======
 
     board = handleCellOpen(board, y, x, value, 0, size);
     board = recursivelyOpen(board, size);
 
->>>>>>> feature
     setBoard(board);
   }
 
