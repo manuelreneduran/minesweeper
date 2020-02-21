@@ -42,14 +42,6 @@ function App() {
       <div id="board">
         {board ? <Board cellClickHandler={cellClickHandler} board={board}/> : null}
       </div>
-      <div id="size-input-container">
-        <form onSubmit={e => handleSizeSubmit(e)} id="size-form">
-          <label id="size-label">Adjust board size (10-100)</label>
-          <input onChange={e => setSize(e.target.value)}type="number" id="size-input" name="size"
-          min="10" max="100"></input>
-          <button id="size-button">Adjust</button>
-        </form>
-      </div>
     </>
   )
 }
